@@ -24,23 +24,23 @@ Enter answers to the questions just below the >Answer: prompt.
 
 1. What are your previous experiences with data analytics, R, and Git? Include both formal and informal training.
 
-> Answer: 
+> Answer:I have less than 2 hours of experience with R. I was acquainted briefly with some of the commmands. My experience with data analytics is mostly limited to Excel.)
 
 2. Are there any components of the course about which you feel confident?
 
-> Answer: 
+> Answer:Not really. But I don't lack confidence either. I am just excited. Sorry if that sounds like a cop out, it isn't. 
 
 3. Are there any components of the course about which you feel apprehensive?
 
-> Answer: 
+> Answer:Maybe linear models. It's been a while since I touched algebra. 
 
 4. Describe a dataset you have used in the past. Explain whether it was a primary or secondary dataset. 
 
-> Answer:
+> Answer:I recently worked with an ICE deportation set comprised of multiple sets of siloed data. It was a secondary set since it was put together by an organization outside of ICE (Deportation Data Project). 
 
 5. Would you describe the day of the month as a nominal, ordinal, interval, or ratio number? Explain your reasoning.
 
-> Answer: 
+> Answer:The day of the month is an interval variable because the days are equidistant. (The difference between June 1 and June 2 is the same as between December 1 and December 2.)
 
 ---
 
@@ -48,9 +48,8 @@ Enter answers to the questions just below the >Answer: prompt.
 
 Provide a link below to your forked course repository in GitHub. Make sure you have pulled all recent changes from the course repository and that you have updated your course README file, committed those changes, and pushed them to your GitHub account. 
 
-> Answer: 
+> Answer: https://www.rdocumentation.org/packages/sets/versions/1.0-25/topics/interval 
 
----
 
 ## 3) Knitting
 When you have completed this document, click the `knit` button.This should produce a PDF copy of your markdown document. Submit this PDF to Canvas 

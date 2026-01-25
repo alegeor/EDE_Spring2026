@@ -83,19 +83,25 @@ geniusgraduatesframe <- data.frame(studentnames,testscores, scholarship)
 9.  Label the columns of your data frame with informative titles.
 
 ```{r basics 2}
-
-
+names(geniusgraduatesframe)<-c("Name", "Score","Scholarship")
 ```
 
 10.  QUESTION: How is this data frame different from a matrix?
 
-> Answer:
+> Answer: The columns of a data frame are comprised of vectors that can be different types. Conversely, all the data in a matrix must be of the same type.  
 
 ---
 
 ## Basics, Part 3
 
 11. Create a function with one input. In this function, use `if`...`else` to evaluate the value of the input: if it is greater than 50, it returns the word "Pass"; otherwise it returns the word "Fail". 
+
+x<-50
+
+if(x >50 ){
+print("Pass") 
+}else{print ("Fail")
+}
 
 12. Create a second function that does the exact same thing as the previous one but uses `ifelse()` instead if `if`...`else `. 
 

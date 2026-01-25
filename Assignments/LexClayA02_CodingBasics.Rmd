@@ -67,7 +67,18 @@ meanquestion1 + sdquestion1
 
 7.  Label each vector with a comment on what type of vector it is.
 
+#this is a character vector. I can check using class(studentnames) in the console. 
+studentnames <- c("Marie Curie", "Albert Einstein", "Enrico Fermi", "Alan Turing")
+
+#this is a numeric vector
+testscores <- c(92, 73, 93, 89)
+
+scholarship <- c(TRUE,FALSE,FALSE,TRUE)
+
 8.  Combine each of the vectors into a data frame. Assign the data frame an informative name.
+#combining my vector variables into a frame using data.frame(vector variables)
+geniusgraduatesframe <- data.frame(studentnames,testscores, scholarship)
+
 
 9.  Label the columns of your data frame with informative titles.
 

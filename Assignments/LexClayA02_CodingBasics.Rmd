@@ -96,29 +96,112 @@ names(geniusgraduatesframe)<-c("Name", "Score","Scholarship")
 
 11. Create a function with one input. In this function, use `if`...`else` to evaluate the value of the input: if it is greater than 50, it returns the word "Pass"; otherwise it returns the word "Fail". 
 
-x<-50
+```{R}
 
-if(x >50 ){
-print("Pass") 
-}else{print ("Fail")
+x<-54
+if(x>50){
+print("Pass")
+}else{print("Fail")
 }
+
+```
+
 
 12. Create a second function that does the exact same thing as the previous one but uses `ifelse()` instead if `if`...`else `. 
 
+```{R}
+y<-54
+
+  
+if (y==54){
+  print("You failed but 54 is my lucky number so I will let you retest!")
+}else if (y>50){
+    print("You passed this time!")
+}
+```
+
 13. Run both functions using the value 54 as the input
+#done 
 
 14. Run both functions using the **vector** of student test scores you created as the input. (Only one will work properly...)
 
-```{r basics 3}
+```{R}
+#run with if...else
+if(testscores>50){
+print("Pass")
+}else{print("Fail")
+}
+
+#run with ifelse
+if(testscores == 54){
+  print("Even geniuses fail. Try again!")
+}else if (testscores > 70){
+  print("Passable.")
+}
+```
+{r basics 3}
 #11. Create a function using if...else
 
+myage <- 36
+if (myage < 30){
+  print ("Gosh, any day now I'll be 30!")
+}else if (myage >= 30 & myage < 40){
+  print("30s is the new 20s! Wild and free!")
+}else {
+  print( "Age is just a numeric variable!")
+}
+```
+
 #12. Create a function using ifelse()
+```{R}
+dogsagehumanyears <-6
+dogsagedogyears <- dogsagehumanyears * 7
+
+if (dogsagehumanyears > 7){
+  print("Why must I age in increments of 7? Not fair.")
+}else if (dogsagehumanyears < 7){
+print("puppy life")
+}
+```
+ 
 
 #13a. Run the first function with the value 54
 
+```{R}
+notmyage <- 54
+if (notmyage < 30){
+  print ("Gosh, any day now I'll be 30!")
+}else if (notmyage >= 30 & notmyage < 40){
+  print("30s is the new 20s! Wild and free!")
+}else {
+  print( "Age is just a numeric variable!")
+}
+```
+
 #13b. Run the second function with the value 54
 
+```{R}
+ancientdog <-54
+dogsagedogyears <- ancientdog * 7
+
+if (ancientdog > 7){
+  print("I am the most ancient dog. ")
+}else if (ancientdog < 7){
+print("puppy life")
+}
+```
 #14a. Run the first function with the vector of test scores
+```{R}
+t <- testscores
+if (t < 30){
+  print ("Gosh, any day now I'll be 30!")
+}else if (t >= 30 & t < 40){
+  print("30s is the new 20s! Wild and free!")
+}else {
+  print( "Age is just a numeric variable!")
+}
+```
+
 
 #14b. Run the second function with the vector of test scores
 ```

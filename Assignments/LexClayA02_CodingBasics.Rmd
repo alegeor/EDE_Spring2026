@@ -67,18 +67,26 @@ meanquestion1 + sdquestion1
 
 7.  Label each vector with a comment on what type of vector it is.
 
+```{R}
+
 #this is a character vector. I can check using class(studentnames) in the console. 
 studentnames <- c("Marie Curie", "Albert Einstein", "Enrico Fermi", "Alan Turing")
 
 #this is a numeric vector
+
 testscores <- c(92, 73, 93, 89)
 
 scholarship <- c(TRUE,FALSE,FALSE,TRUE)
 
+```
+
 8.  Combine each of the vectors into a data frame. Assign the data frame an informative name.
+
+```{R}
 #combining my vector variables into a frame using data.frame(vector variables)
 geniusgraduatesframe <- data.frame(studentnames,testscores, scholarship)
 
+```
 
 9.  Label the columns of your data frame with informative titles.
 
@@ -110,38 +118,38 @@ print("Pass")
 12. Create a second function that does the exact same thing as the previous one but uses `ifelse()` instead if `if`...`else `. 
 
 ```{R}
-y<-54
-
-  
-if (y==54){
-  print("You failed but 54 is my lucky number so I will let you retest!")
-}else if (y>50){
-    print("You passed this time!")
-}
+y <- c(25, 50, 54, 82)
+status <- ifelse (y >=50, "Pass","Fail")
+print(status)
 ```
 
 13. Run both functions using the value 54 as the input
-#done 
+#done above
 
 14. Run both functions using the **vector** of student test scores you created as the input. (Only one will work properly...)
 
 ```{R}
 #run with if...else
-if(testscores>50){
-print("Pass")
-}else{print("Fail")
-}
 
+#if(testscores >50){
+#print("Pass")
+#}else{print("Fail")
+#}
+
+#this returns the error: Error in if (testscores > 50) { : the condition has length > 1
+```
+
+```{R}
 #run with ifelse
-if(testscores == 54){
-  print("Even geniuses fail. Try again!")
-}else if (testscores > 70){
-  print("Passable.")
-}
+status <- ifelse (testscores >=50, "Pass","Fail")
+print(status)
+
+#this one works
 ```
 {r basics 3}
 #11. Create a function using if...else
 
+```{R}
 myage <- 36
 if (myage < 30){
   print ("Gosh, any day now I'll be 30!")
@@ -154,14 +162,10 @@ if (myage < 30){
 
 #12. Create a function using ifelse()
 ```{R}
-dogsagehumanyears <-6
-dogsagedogyears <- dogsagehumanyears * 7
+siblingages <- c(3, 7, 13, 16)
+agestatus <- ifelse(siblingages > 12, "Teenager","Child")
+print(agestatus)
 
-if (dogsagehumanyears > 7){
-  print("Why must I age in increments of 7? Not fair.")
-}else if (dogsagehumanyears < 7){
-print("puppy life")
-}
 ```
  
 
@@ -181,34 +185,35 @@ if (notmyage < 30){
 #13b. Run the second function with the value 54
 
 ```{R}
-ancientdog <-54
-dogsagedogyears <- ancientdog * 7
-
-if (ancientdog > 7){
-  print("I am the most ancient dog. ")
-}else if (ancientdog < 7){
-print("puppy life")
-}
+#not sure if this is what you meant here..
+siblingages<- 54
+agestatus <- ifelse(siblingages > 12, "Teenager","Child")
+print(agestatus) 
 ```
 #14a. Run the first function with the vector of test scores
 ```{R}
-t <- testscores
-if (t < 30){
-  print ("Gosh, any day now I'll be 30!")
-}else if (t >= 30 & t < 40){
-  print("30s is the new 20s! Wild and free!")
-}else {
-  print( "Age is just a numeric variable!")
-}
-```
+#this is the if...else
 
+#  if (testscores < 30){
+#   print ("Did you even try?")
+#  }else if (myage >= 30 & myage < 40){
+#  print("It could be worse!")
+#  }else {
+#  print( "Mediocre!")
+#  }
+```
 
 #14b. Run the second function with the vector of test scores
+```{R}
+teststatus <- ifelse(testscores > 12, "You know some things","Did you even try?")
+print(teststatus)
 ```
+
 
 15. QUESTION: Which option of `if`...`else` vs. `ifelse` worked? Why? (Hint: search the web for "R vectorization"; it's ok here if an AI response is presented in the search response.)
 
 > Answer:
 
+An if..else statement is built to evaluate true or false for a single element. Only an ifelse() statement works to run a vector because it tests each element independently, which I imagine will make it helpful for analyzing large datasets efficiently.  
 
 **NOTE** Before knitting, you'll need to comment out the call to the function in Q14 that does not work. (A document can't knit if the code it contains causes an error!)

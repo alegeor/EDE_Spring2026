@@ -118,7 +118,7 @@ summary(Neonics$Species.Common.Name, maxsum =6)
 summary(Neonics$Test.Location, maxsum =6)
 ```
 
-► Question: What do these species have in common? Why might they be of interest over other insects? 
+ Question: What do these species have in common? Why might they be of interest over other insects? 
 > Answer: With the exception of the (other) group, they are all species of bees.Their role as pollinators makes them important. 
 
 
@@ -157,7 +157,7 @@ ggplot(Neonics)+
 ```
 
 
-►Interpret this graph. What are the most common test locations, and do they differ over time?
+Interpret this graph. What are the most common test locations, and do they differ over time?
 > Answer: Field natural is the most common test location for a period right before 2010. Overall, Lab is the most common test location with a significant uptick between 2010 and 2020. 
 
 
@@ -173,7 +173,7 @@ ggplot(data=Neonics, aes(x= Endpoint))+theme(axis.text.x = element_text(angle = 
 ```
 
 
-► What are the two most common end points, and how are they defined? Consult the ECOTOX_CodeAppendix (p.721) for more information. 
+What are the two most common end points, and how are they defined? Consult the ECOTOX_CodeAppendix (p.721) for more information. 
 > Answer:
 The two most common end points are LOEL(lowest observable effect level) and NOEL(no observable effect level.) Both measure the effect relative to controls. 
 ---
@@ -202,7 +202,7 @@ summary(Litter$plotID)
 class(Litter$plotID) #this is a factor 
 ```
 
-► How is the information obtained from `unique` different from that obtained from `summary`?
+How is the information obtained from `unique` different from that obtained from `summary`?
 > Answer:The unique function simply lists the unique IDs without duplicates. The summary function includes the number of times each unique ID appears in the data set. 
 
 
@@ -216,7 +216,7 @@ ggplot(data=Litter, aes(x =functionalGroup))+
 
 15. Using `geom_boxplot` and `geom_violin`, create a boxplot and a violin plot of `dryMass` by `functionalGroup`.
 
-```{r Boxplot v. Violin plot: Which shows this data best?}
+```{r Plotwar}
 ggplot(Litter)+
   geom_boxplot(aes(x = functionalGroup, y = dryMass))
 
@@ -224,8 +224,8 @@ ggplot(Litter)+
   geom_violin(aes(x=functionalGroup, y=dryMass))
 ```
 
-► Why is the boxplot a more effective visualization option than the violin plot in this case?
+Why is the boxplot a more effective visualization option than the violin plot in this case?
 > Answer:The box plot shows the actual variation between the data points, whereas the violin plot oversimplifies to a straight line. 
 
-► What type(s) of litter tend to have the highest biomass at these sites?
+What type(s) of litter tend to have the highest biomass at these sites?
 > Answer: Needles have the highest biomass, with a median biomass of almost 2.5. 

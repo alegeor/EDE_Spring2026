@@ -81,48 +81,56 @@ Maybe I am speculating now about how these two data sites are related, but it is
 
 
 > Answer: 
- 1.
- 2.
- 3. 
+ 1.Litter and fine woody debris samplig is taken only at sites with vegetation > 2m tall and only in tower plots(page 3.)
+ 2.In sites with >50% cover of woody vegetation, placement of litter traps is random.In sites with <50% cover, litter traps are placed in areas beneath the qualifying vegetation measure. 
+ 3.Sample data is nested in the following structure: subplotID < plotID < siteID < domainID. 
 
 ## Obtain basic summaries of your data (Neonics)
 
 5.  What are the dimensions of the dataset?
 
 ```{r}
+dim(Neonics)
 
+#answer: dimensions are 4623    30 
 
 ```
 
 6.  Using the `summary` function on the "Effect" column, determine the most common effects that are studied.  [Tip: The `sort()` command is useful for listing the values in order of magnitude...]
 
 ```{r}
-
+summary(Neonics$Effect)%>%sort()
 ```
 
 Question: Which two effects stand out as the most studied? Can you guess why these effects might specifically be of interest?
 > Answer:
-
+Mortality and Population stand out as the most studied presumably because they are the most closely associated with a species' survival. 
 
 7.  Using the `summary` function, determine the six most commonly studied species in the dataset (common name).[TIP: Explore the help on the `summary()` function, in particular the `maxsum` argument...]
 
 ```{r}
+summary(Neonics$Species.Group, maxsum =6)
 
+summary(Neonics$Species.Common.Name, maxsum =6)
 
+summary(Neonics$Test.Location, maxsum =6)
 ```
 
 ► Question: What do these species have in common? Why might they be of interest over other insects? 
-> Answer:
+> Answer: With the exception of the (other) group, they are all species of bees.Their role as pollinators makes them important. 
 
 
 8.  The `Conc.1..Author` column, which lists the concentration of the neonicitoid dose, should include numeric values. What is the class of `Conc.1..Author.` column in the dataset, and why is it not numeric? [Tip: Viewing the dataframe may be helpful...]
 
 ```{r}
+class("Conc.1..Author")
 
+View(Neonics)
 
 ```
 
-> Answer:
+> Answer: #Conc.1..Author is categorized as a character instead of numeric because the column (which is a vector) can only store data points from one data type. Since some entries list "NR" instead of a numeric concentration, it was classified as a character. 
+
 
 
 ## Explore your data graphically (Neonics)
@@ -131,6 +139,8 @@ Question: Which two effects stand out as the most studied? Can you guess why the
 
 ```{r}
 
+ggplot(Neonics) +
+  geom_freqpoly(aes(x = Publication.Year))
 
 ```
 
@@ -138,12 +148,15 @@ Question: Which two effects stand out as the most studied? Can you guess why the
 10. Reproduce the same graph but now add a color aesthetic so that different Test.Location are displayed as different colors.
 
 ```{r}
+ 
+ggplot(Neonics)+ 
+  geom_freqpoly(aes(x = Publication.Year, color=Test.Location))
 
 ```
 
 
 ►Interpret this graph. What are the most common test locations, and do they differ over time?
-> Answer:
+> Answer: Field natural is the most common test location for a period right before 2010. Overall, Lab is the most common test location with a significant uptick between 2010 and 2020. 
 
 
 11. Create a bar graph of Endpoint counts. 

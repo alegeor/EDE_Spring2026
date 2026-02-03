@@ -44,8 +44,8 @@ This exercise accompanies the lessons in Environmental Data Analytics on Data Ex
 ```{r,  message = FALSE}
 #Here I load libraries and CSV files
 
-#library(tidyverse)
-#library(here)
+library(tidyverse)
+library(here)
 
 getwd()
 

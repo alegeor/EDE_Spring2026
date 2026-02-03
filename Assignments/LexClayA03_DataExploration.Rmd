@@ -1,6 +1,6 @@
 ---
 title: "Assignment 3: Data Exploration"
-author: "Student Name"
+author: Lex Clay 
 date: "Spring 2026"
 output: pdf_document
 geometry: margin=2.54cm
@@ -42,6 +42,7 @@ This exercise accompanies the lessons in Environmental Data Analytics on Data Ex
 
 
 ```{r,  message = FALSE}
+#Here I load libraries and CSV files
 
 #library(tidyverse)
 #library(here)
@@ -87,7 +88,9 @@ Maybe I am speculating now about how these two data sites are related, but it is
 
 5.  What are the dimensions of the dataset?
 
-```{r}
+```{r Dimensions of Dataset}
+
+
 dim(Neonics)
 
 #answer: dimensions are 4623    30 
@@ -96,7 +99,8 @@ dim(Neonics)
 
 6.  Using the `summary` function on the "Effect" column, determine the most common effects that are studied.  [Tip: The `sort()` command is useful for listing the values in order of magnitude...]
 
-```{r}
+```{r Summary of Neonics}
+#
 summary(Neonics$Effect)%>%sort()
 ```
 
@@ -106,7 +110,7 @@ Mortality and Population stand out as the most studied presumably because they a
 
 7.  Using the `summary` function, determine the six most commonly studied species in the dataset (common name).[TIP: Explore the help on the `summary()` function, in particular the `maxsum` argument...]
 
-```{r}
+```{r Summary and maxsum by Species type}
 summary(Neonics$Species.Group, maxsum =6)
 
 summary(Neonics$Species.Common.Name, maxsum =6)
@@ -120,7 +124,7 @@ summary(Neonics$Test.Location, maxsum =6)
 
 8.  The `Conc.1..Author` column, which lists the concentration of the neonicitoid dose, should include numeric values. What is the class of `Conc.1..Author.` column in the dataset, and why is it not numeric? [Tip: Viewing the dataframe may be helpful...]
 
-```{r}
+```{r Data Type of Conc. 1..Author}
 class("Conc.1..Author")
 
 View(Neonics)
@@ -135,7 +139,7 @@ View(Neonics)
 
 9.  Using `geom_freqpoly`, generate a plot of the number of studies conducted by publication year.
 
-```{r}
+```{r Studies by Pub Year}
 
 ggplot(Neonics) +
   geom_freqpoly(aes(x = Publication.Year))
@@ -145,7 +149,7 @@ ggplot(Neonics) +
 
 10. Reproduce the same graph but now add a color aesthetic so that different Test.Location are displayed as different colors.
 
-```{r}
+```{r Studies by Pub Year by Location}
  
 ggplot(Neonics)+ 
   geom_freqpoly(aes(x = Publication.Year, color=Test.Location))
@@ -161,7 +165,7 @@ ggplot(Neonics)+
 
 [**TIP**: Add `theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))` to the end of your plot command to rotate and align the X-axis labels...]
 
-```{r}
+```{r Endpoint Counts}
 ggplot(data=Neonics, aes(x= Endpoint))+theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
   geom_bar(fill ="#5C4033") 
 
@@ -178,7 +182,7 @@ The two most common end points are LOEL(lowest observable effect level) and NOEL
 
 12. Determine the class of `collectDate`. Is it a date? If not, change to a date and confirm the new class of the variable. Using the `unique` function, determine which dates litter was sampled in August 2018.
 
-```{r}
+```{r Classifying the Dates as Correct Datatype}
 class("collectDate")#shows that it is a character not a date 
 
 Litter$collectDate <-as.Date(Litter$collectDate, format='%Y-%m-%d')
@@ -190,7 +194,7 @@ class(Litter$collectDate) #confirmed it is a date now
 
 13. Using the `unique` function, list the different `plotIDs` sampled at Niwot Ridge. 
 
-```{r}
+```{r plotIDs}
 unique(Litter$plotID)
 
 summary(Litter$plotID)
@@ -204,7 +208,7 @@ class(Litter$plotID) #this is a factor
 
 14. Create a bar graph of `functionalGroup` counts. This shows you what type of litter is collected at the Niwot Ridge sites. Notice that litter types are fairly equally distributed across the Niwot Ridge sites.
 
-```{r}
+```{r functionalGroup Counts}
 ggplot(data=Litter, aes(x =functionalGroup))+
   geom_bar()
 ```
@@ -212,7 +216,7 @@ ggplot(data=Litter, aes(x =functionalGroup))+
 
 15. Using `geom_boxplot` and `geom_violin`, create a boxplot and a violin plot of `dryMass` by `functionalGroup`.
 
-```{r}
+```{r Boxplot v. Violin plot: Which shows this data best?}
 ggplot(Litter)+
   geom_boxplot(aes(x = functionalGroup, y = dryMass))
 

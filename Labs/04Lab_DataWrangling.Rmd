@@ -22,14 +22,14 @@ Opening discussion: why might we be interested in long-term observations of temp
 
 ```{r workspace setup, message = FALSE}
 #Install packages
-library(tidyverse); library(here) 
+library(tidyverse); library(here); library(lubridate)
 
 #Ensure that "here" points to your project folder
 here()
 
 #Read in the data
 NTL.phys.data <- read.csv(
-  file=here("Data/Raw/NTL-LTER_Lake_ChemistryPhysics_Raw.csv"), 
+  file=here("./Data/Raw/NTL-LTER_Lake_ChemistryPhysics_Raw.csv"), 
   stringsAsFactors = TRUE
 )
 
@@ -39,7 +39,7 @@ str(NTL.phys.data$sampledate)
 #Alternatively, use the tidyverse/dplyr "glimpse" function
 glimpse(NTL.phys.data$sampledate)
 
-# Change sampledate values into date objects
+# Change sampledate values into date objects. If you run this twice it will output "na", so you should run this in a separate code chunk. 
 NTL.phys.data$sampledate <- mdy(NTL.phys.data$sampledate)
 ```
 
@@ -72,6 +72,9 @@ NTL.phys.data.PeterPaul <-
 # Choose a range of conditions of a numeric or integer variable
 summary(NTL.phys.data$daynum)
 NTL.phys.data.JunethruOctober <- filter(NTL.phys.data, daynum %in% c(152:304))
+NTL.phys.data.JunethruOctober <- filter(
+  NTL.phys.data, 
+  month(sampledate) %in% c(6:10)
 ```
 
 ```{r Exercise 1 & 2}
@@ -79,11 +82,16 @@ NTL.phys.data.JunethruOctober <- filter(NTL.phys.data, daynum %in% c(152:304))
 # filter NTL.phys.data for the year 1999
 # what code do you need to use, based on the class of the variable?
 
+ex2 <- filter(
+  NTL.phys.data, 
+  year(sampledate) %in% c(1990:1999))
+
 
 # Exercise 2: 
 # filter NTL.phys.data for Tuesday Lake from 1990 through 1999.
 
-
+NTL.phys.dataninetynine <- filter(NTL.phys.data, daynum %>% c
+))
 ```
 Question: Why don't we filter using row numbers?
 
@@ -131,7 +139,8 @@ For gather we will use `pivot_longer` and for spread we will use `pivot_wider`.
 #  the new column holding the irradiance type as "Irradiance_Type", and name the
 #  new column holding the irradiance values as "Irradiance_Value".
 
-
+ex5 <- NTL.phys.data %>% 
+  pivot_longer()
 
 #Exercise 6: Spread temperatureC into more than one column based on the depth.
 
@@ -139,3 +148,11 @@ For gather we will use `pivot_longer` and for spread we will use `pivot_wider`.
 
 ```
 
+```{R}
+demo <- NTL.phys.data %>% 
+  filter(depth==0) %>% 
+  group_by(year4) %>% 
+  summarize()
+
+#this does not show anything. Add the mean part. 
+```

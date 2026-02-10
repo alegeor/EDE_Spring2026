@@ -53,9 +53,9 @@ here()
 #1c 
 EPAAirList <- list(
   EPAAirOne <- read.csv(file=here('./Data/Raw/EPAair_O3_NC2018_raw.csv'),stringsAsFactors=TRUE),
-  EPAAirTwo <-read.csv(file=here('./Data/Raw/EPAair_O3_NC2019_raw.csv')),
-  EPAAirThree <- read.csv(file=here('./Data/Raw/EPAair_PM25_NC2018_raw.csv')),
-  EPAAirFour <- read.csv(file=here('./Data/Raw/EPAair_PM25_NC2019_raw.csv'))
+  EPAAirTwo <-read.csv(file=here('./Data/Raw/EPAair_O3_NC2019_raw.csv'),stringsAsFactors=TRUE),
+  EPAAirThree <- read.csv(file=here('./Data/Raw/EPAair_PM25_NC2018_raw.csv'),stringsAsFactors=TRUE),
+  EPAAirFour <- read.csv(file=here('./Data/Raw/EPAair_PM25_NC2019_raw.csv'),stringsAsFactors=TRUE)
 )
     
 str(EPAAirList)
@@ -84,12 +84,118 @@ str(EPAAirList)
 
 ```{r questions 3 thru 4}
 #3
+EPAAirOne$Date <- mdy(EPAAirOne$Date)
+```
+
+```{r}
+EPAAirTwo$Date <-mdy (EPAAirTwo$Date)
+```
+
+```{r}
+EPAAirThree$Date <- mdy(EPAAirThree$Date)
+```
+
+```{r}
+EPAAirFour$Date <-mdy(EPAAirFour$Date)
+```
+
 
 #4
 
+
+```{r}
+  EPAOne_DataFrame <- data.frame(
+    Date = EPAAirOne$Date,
+    Daily_AQI_Value= EPAAirOne$DAILY_AQI_VALUE, 
+    Site_Name = EPAAirOne$Site.Name, 
+    AQS_Parameter_Desc = EPAAirOne$AQS_PARAMETER_DESC, 
+    County = EPAAirOne$COUNTY, 
+    Site_Latitude = EPAAirOne$SITE_LATITUDE, 
+    Site_Longitude = EPAAirOne$SITE_LONGITUDE,
+    stringsAsFactors = TRUE
+  )
+
+ EPATwo_DataFrame <- data.frame(
+    Date = EPAAirTwo$Date,
+    Daily_AQI_Value= EPAAirTwo$DAILY_AQI_VALUE, 
+    Site_Name = EPAAirTwo$Site.Name, 
+    AQS_Parameter_Desc = EPAAirTwo$AQS_PARAMETER_DESC, 
+    County = EPAAirTwo$COUNTY, 
+    Site_Latitude = EPAAirTwo$SITE_LATITUDE, 
+    Site_Longitude = EPAAirTwo$SITE_LONGITUDE, 
+    stringsAsFactors = TRUE
+   
+ )
+ 
+ EPAThree_DataFrame <- data.frame(
+    Date = EPAAirThree$Date,
+    Daily_AQI_Value= EPAAirThree$DAILY_AQI_VALUE, 
+    Site_Name = EPAAirThree$Site.Name, 
+    AQS_Parameter_Desc = EPAAirThree$AQS_PARAMETER_DESC, 
+    County = EPAAirThree$COUNTY, 
+    Site_Latitude = EPAAirThree$SITE_LATITUDE, 
+    Site_Longitude = EPAAirThree$SITE_LONGITUDE, 
+    stringsAsFactors = TRUE
+ )
+ 
+ EPAFour_DataFrame <- data.frame(
+    Date = EPAAirFour$Date,
+    Daily_AQI_Value= EPAAirFour$DAILY_AQI_VALUE, 
+    Site_Name = EPAAirFour$Site.Name, 
+    AQS_Parameter_Desc = EPAAirFour$AQS_PARAMETER_DESC, 
+    County = EPAAirFour$COUNTY, 
+    Site_Latitude = EPAAirFour$SITE_LATITUDE, 
+    Site_Longitude = EPAAirFour$SITE_LONGITUDE, 
+    stringsAsFactors = TRUE
+   
+ )
+```
+
 #5
 
+```{r}
+EPAThreee_DataFrame <- EPAThree_DataFrame %>% 
+  mutate(AQS_Parameter_Desc = "PM2.5")
+
+
+
+EPAFourr_DataFrame <- EPAFour_DataFrame%>% 
+  mutate(AQS_Parameter_Desc = "PM2.5")
+
+
+
+```
+
+
 #6
+```{r}
+
+#Saving to processed csvs
+
+write.csv(
+  EPAOne_DataFrame, 
+  row.names = FALSE, 
+  file=here('./Data/Processed/EPAair_03_NC2018_processed.csv')
+)
+
+write.csv(
+  EPATwo_DataFrame, 
+  row.names = FALSE, 
+  file=here('./Data/processed/EPAair_O3_NC2019_processed.csv')
+)
+
+write.csv(
+  EPAThreee_DataFrame,
+  row.names= FALSE, 
+  file=here('./Data/Processed/EPAair_PM25_NC2018_processed.csv')
+)
+
+write.csv(
+  EPAFourr_DataFrame,
+  row.names = FALSE, 
+  file=here('./Data/Processed/EPAair_PM25_NC2019_processed.csv')
+)
+```
 
 
 ```
@@ -97,9 +203,21 @@ str(EPAAirList)
 
 ## Combine datasets
 
-7. Combine the four datasets with `rbind`. Make sure your column names are identical prior to running this code.
+7. Combine the four datasets with `rbind`. Make sure your column names are identical prior to running this code.'
+
+```{r}
+Master_EPA_Air <- rbind(EPAOne_DataFrame, EPATwo_DataFrame, EPAThreee_DataFrame, EPAFourr_DataFrame)
+```
+
 
 8. Use code to display the dimensions of the combined dataset.
+
+```{r}
+
+dim(Master_EPA_Air)
+
+```
+
 
 9. Wrangle your new dataset with a pipe function (%>%) so that it fills the following conditions: 
 
@@ -122,15 +240,37 @@ str(EPAAirList)
 12. Save your processed dataset with the following file name: "EPAair_O3_PM25_NC1819_Processed.csv"
 
 ```{r questions 7 thru 12}
-#7 
+#7 see above
 
-#8 
+#8 see above
 
 #9
 
+EPA_Common_Sites <- Master_EPA_Air %>% 
+filter(Site_Name %in% c("Linville Falls", "Durham Armory", "Leggett", "Hattie Avenue",  
+    "Clemmons Middle", "Mendenhall School", "Frying Pan Mountain", 
+    "West Johnston Co.", "Garinger High School", "Castle Hayne", 
+    "Pitt Agri. Center", "Bryson City", "Millbrook School")
+)
+
+
+EPA_Summary <- EPA_Common_Sites %>% group_by(Date,Site_Name,AQS_Parameter_Desc,County,Site_Latitude,Site_Longitude)%>% summarise(Mean_AQI = mean(Daily_AQI_Value))
+
 #10
 
-#11
+EPA_Summary_AQS_Adjust <-EPA_Summary %>% 
+mutate(
+Ozone=ifelse(AQS_Parameter_Desc=="Ozone", "Ozone",NA),
+PM2.5=ifelse(AQS_Parameter_Desc=="PM2.5", "PM2.5", NA)
+)
+
+
+#This is not quite doing what I want so I think I need to give up on this one for now. 
+
+
+
+
+#115
 
 #12
 

@@ -198,9 +198,6 @@ write.csv(
 ```
 
 
-```
-
-
 ## Combine datasets
 
 7. Combine the four datasets with `rbind`. Make sure your column names are identical prior to running this code.'
@@ -250,30 +247,37 @@ EPA_Common_Sites <- Master_EPA_Air %>%
 filter(Site_Name %in% c("Linville Falls", "Durham Armory", "Leggett", "Hattie Avenue",  
     "Clemmons Middle", "Mendenhall School", "Frying Pan Mountain", 
     "West Johnston Co.", "Garinger High School", "Castle Hayne", 
-    "Pitt Agri. Center", "Bryson City", "Millbrook School")
-)
+    "Pitt Agri. Center", "Bryson City", "Millbrook School")) %>% 
+      mutate(month=month(Date), year=year(Date))
 
 
-EPA_Summary <- EPA_Common_Sites %>% group_by(Date,Site_Name,AQS_Parameter_Desc,County,Site_Latitude,Site_Longitude)%>% summarise(Mean_AQI = mean(Daily_AQI_Value))
+EPA_Summary <- EPA_Common_Sites %>% group_by(Date,Site_Name,AQS_Parameter_Desc,County,Site_Latitude,Site_Longitude, month, year)%>% summarise(Mean_AQI = mean(Daily_AQI_Value))  #IDK if I should use mutate here instead of summarize
 
-#10
+  #IDK if I should use mutate here instead of summarize
+
+#note to self...at this point the EPA_Summary dimensions are correct if I use summarise- still 14752 9, BUT the month and year columns disappear. I added them manually. 
+
 
 EPA_Summary_AQS_Adjust <-EPA_Summary %>% 
-mutate(
-Ozone=ifelse(AQS_Parameter_Desc=="Ozone", "Ozone",NA),
-PM2.5=ifelse(AQS_Parameter_Desc=="PM2.5", "PM2.5", NA)
-)
+  pivot_wider(names_from = AQS_Parameter_Desc, values_from = Mean_AQI)
+  
+
+#This is not quite doing what I want so I think I need to surrender for now. 
 
 
-#This is not quite doing what I want so I think I need to give up on this one for now. 
+#11
 
+dim(EPA_Summary_AQS_Adjust)
 
-
-
-#115
+#dim are 8976 7....Sounds off.. Not sure where I went wrong
 
 #12
 
+write.csv(
+  EPA_Summary_AQS_Adjust, 
+  row.names=FALSE,
+  file=here('./Data/processed/EPAair_O3_PM25_NC1819_Processed.csv')
+  )
 
 ```
 
@@ -288,6 +292,13 @@ PM2.5=ifelse(AQS_Parameter_Desc=="PM2.5", "PM2.5", NA)
 
 #13
 
+EPA_Summaries <- 
+  EPA_Summary_AQS_Adjust %>% 
+  group_by(Site_Name,month,year,PM2.5, Ozone) %>% 
+  na.omit(Ozone)
+
+#Question to John: Didn't we already computer the mean AQI in an earlier command? I'm probably misinterpreting something here.
+
 #14
 
 
@@ -295,7 +306,7 @@ PM2.5=ifelse(AQS_Parameter_Desc=="PM2.5", "PM2.5", NA)
 
 15. Why did we use the function `drop_na` rather than `na.omit`? Hint: replace `drop_na` with `na.omit` in part 13 and observe what happens with the dimensions of the summary date frame.
 
-> Answer: 
+> Answer: It looks like it deletes objects where the average AQS is missing/na - so the dimensions decrease accordingly.
 
 16. Stage, commit, and push your Assignment to your GitHub account. Provide a link to your repository below.
 

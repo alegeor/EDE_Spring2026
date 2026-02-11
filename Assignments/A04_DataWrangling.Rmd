@@ -30,6 +30,7 @@ Do not use any AI tools in completing this assignment.
 
 library(tidyverse)
 library(here)
+library(dplyr)
 
 ```
 
@@ -96,7 +97,7 @@ EPAAirThree$Date <- mdy(EPAAirThree$Date)
 ```
 
 ```{r}
-EPAAirFour$Date <-mdy(EPAAirFour$Date)
+EPAAirFour$Date <-ymd(EPAAirFour$Date)
 ```
 
 
@@ -138,17 +139,7 @@ EPAAirFour$Date <-mdy(EPAAirFour$Date)
     stringsAsFactors = TRUE
  )
  
- EPAFour_DataFrame <- data.frame(
-    Date = EPAAirFour$Date,
-    Daily_AQI_Value= EPAAirFour$DAILY_AQI_VALUE, 
-    Site_Name = EPAAirFour$Site.Name, 
-    AQS_Parameter_Desc = EPAAirFour$AQS_PARAMETER_DESC, 
-    County = EPAAirFour$COUNTY, 
-    Site_Latitude = EPAAirFour$SITE_LATITUDE, 
-    Site_Longitude = EPAAirFour$SITE_LONGITUDE, 
-    stringsAsFactors = TRUE
-   
- )
+ EPAFour_DataFrame <- EPAAirFour #I think I somehow overrode the raw file with the processed one and I don't know how to fix this!
 ```
 
 #5

@@ -139,7 +139,8 @@ EPAAirFour$Date <-ymd(EPAAirFour$Date)
     stringsAsFactors = TRUE
  )
  
- EPAFour_DataFrame <- EPAAirFour #I think I somehow overrode the raw file with the processed one and I don't know how to fix this!
+ EPAFour_DataFrame <- EPAAirFour #I think I somehow overrode the raw file with the processed one 
+ #and I don't know how to fix this!
 ```
 
 #5
@@ -246,7 +247,8 @@ EPA_Summary <- EPA_Common_Sites %>% group_by(Date,Site_Name,AQS_Parameter_Desc,C
 
   #IDK if I should use mutate here instead of summarize
 
-#note to self...at this point the EPA_Summary dimensions are correct if I use summarise- still 14752 9, BUT the month and year columns disappear. I added them manually. 
+#note to self...at this point the EPA_Summary dimensions are correct if I use summarise- still 14752 9, 
+#BUT the month and year columns disappear. I added them manually. 
 
 
 EPA_Summary_AQS_Adjust <-EPA_Summary %>% 
@@ -288,7 +290,8 @@ EPA_Summaries <-
   group_by(Site_Name,month,year,PM2.5, Ozone) %>% 
   drop_na(Ozone)
 
-#Question to John: Didn't we already computer the mean AQI in an earlier command? I'm probably misinterpreting something here.
+#Question to John: Didn't we already computer the mean AQI in an earlier command?
+#I'm probably misinterpreting something here.
 
 #14
 
@@ -297,7 +300,8 @@ EPA_Summaries <-
 
 15. Why did we use the function `drop_na` rather than `na.omit`? Hint: replace `drop_na` with `na.omit` in part 13 and observe what happens with the dimensions of the summary date frame.
 
-> Answer: It looks like it deletes objects where the average AQS is missing/na - so the dimensions decrease accordingly.
+> Answer: It looks like it deletes objects where the average AQS is missing/na - 
+#so the dimensions decrease accordingly.
 
 16. Stage, commit, and push your Assignment to your GitHub account. Provide a link to your repository below.
 

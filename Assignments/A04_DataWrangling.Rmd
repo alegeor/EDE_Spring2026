@@ -59,7 +59,7 @@ EPAAirList <- list(
   EPAAirFour <- read.csv(file=here('./Data/Raw/EPAair_PM25_NC2019_raw.csv'),stringsAsFactors=TRUE)
 )
     
-str(EPAAirList)
+#str(EPAAirList)
 
 #dim(EPAAirList) this returns null when used with list. only works with single objects? 
 
@@ -243,7 +243,7 @@ filter(Site_Name %in% c("Linville Falls", "Durham Armory", "Leggett", "Hattie Av
       mutate(month=month(Date), year=year(Date))
 
 
-EPA_Summary <- EPA_Common_Sites %>% group_by(Date,Site_Name,AQS_Parameter_Desc,County,Site_Latitude,Site_Longitude, month, year)%>% summarise(Mean_AQI = mean(Daily_AQI_Value))  #IDK if I should use mutate here instead of summarize
+EPA_Summary <- EPA_Common_Sites %>% group_by(Date,Site_Name,AQS_Parameter_Desc,County, Site_Latitude,Site_Longitude, month, year)%>% summarise(Mean_AQI = mean(Daily_AQI_Value))  #IDK if I should use mutate here instead of summarize
 
   #IDK if I should use mutate here instead of summarize
 
@@ -290,7 +290,7 @@ EPA_Summaries <-
   group_by(Site_Name,month,year,PM2.5, Ozone) %>% 
   drop_na(Ozone)
 
-#Question to John: Didn't we already computer the mean AQI in an earlier command?
+#Question to John: Didn't we already computer the mean AQI in an earlier command? 
 #I'm probably misinterpreting something here.
 
 #14

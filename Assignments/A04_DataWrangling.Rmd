@@ -96,7 +96,7 @@ EPAAirThree$Date <- mdy(EPAAirThree$Date)
 ```
 
 ```{r}
-#EPAAirFour$Date <-mdy(EPAAirFour$Date)
+EPAAirFour$Date <-mdy(EPAAirFour$Date)
 ```
 
 

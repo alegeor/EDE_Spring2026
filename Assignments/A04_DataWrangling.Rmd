@@ -96,7 +96,7 @@ EPAAirThree$Date <- mdy(EPAAirThree$Date)
 ```
 
 ```{r}
-EPAAirFour$Date <-mdy(EPAAirFour$Date)
+#EPAAirFour$Date <-mdy(EPAAirFour$Date)
 ```
 
 
@@ -295,7 +295,7 @@ write.csv(
 EPA_Summaries <- 
   EPA_Summary_AQS_Adjust %>% 
   group_by(Site_Name,month,year,PM2.5, Ozone) %>% 
-  na.omit(Ozone)
+  drop_na(Ozone)
 
 #Question to John: Didn't we already computer the mean AQI in an earlier command? I'm probably misinterpreting something here.
 

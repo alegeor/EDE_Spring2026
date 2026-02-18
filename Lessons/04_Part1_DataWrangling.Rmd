@@ -36,7 +36,7 @@ dim(NTL.phys.data)
 
 class(NTL.phys.data$sampledate)
 # Format sampledate as date
-#NTL.phys.data$sampledate <- mdy(NTL.phys.data$sampledate)
+NTL.phys.data$sampledate <- mdy(NTL.phys.data$sampledate)
 ```
 
 ## Data Wrangling

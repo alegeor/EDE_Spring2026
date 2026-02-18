@@ -26,8 +26,7 @@ library(tidyverse)
 library(here)
 
 NTL.phys.data <- read.csv(
-  here("Data/Raw/NTL-LTER_Lake_ChemistryPhysics_Raw.csv"),
-  stringsAsFactors = TRUE)
+  here("Data/Raw/NTL-LTER_Lake_ChemistryPhysics_Raw.csv"),stringsAsFactors = TRUE)
 
 colnames(NTL.phys.data)
 head(NTL.phys.data)
@@ -37,7 +36,7 @@ dim(NTL.phys.data)
 
 class(NTL.phys.data$sampledate)
 # Format sampledate as date
-NTL.phys.data$sampledate <- mdy(NTL.phys.data$sampledate)
+#NTL.phys.data$sampledate <- mdy(NTL.phys.data$sampledate)
 ```
 
 ## Data Wrangling
@@ -73,6 +72,10 @@ Here are the relevant commands used in the `filter` function. Add some notes to 
 `|`
 
 ```{r filtering data}
+
+
+NTL.phys.data$lakeid <- as.character(NTL.phys.data$lakeid)
+
 class(NTL.phys.data$lakeid)
 class(NTL.phys.data$depth)
 
@@ -141,6 +144,8 @@ Selecting allows us to choose certain columns (variables) in our dataset.
 
 ```{r selecting columns}
 NTL.phys.data.temps <- select(NTL.phys.data, lakename, sampledate:temperature_C)
+
+#this is also selecting everything between sampledate and temperature_c including those two extremes. 
 
 ```
 ### Mutate

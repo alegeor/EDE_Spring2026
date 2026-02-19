@@ -33,7 +33,23 @@ This exercise accompanies the lessons in Environmental Data Analytics on Data Vi
 ```{r initialize project}
 #1 
 
+library(tidyverse)
+library(here)
+library(cowplot)
+
 #2 
+getwd()
+here()
+
+NTL.LTR <-read.csv(file=here('Data/Processed/NTL-LTER_Lake_Chemistry_Nutrients_PeterPaul_Processed.csv'), stringsAsFactors = TRUE)
+
+NEON.NIWO <-read.csv(file=here('Data/Processed/NEON_NIWO_Litter_mass_trap_Processed.csv'), stringsAsFactors = TRUE)
+
+str(NTL.LTR)
+str(NEON.NIWO)
+
+NTL.LTR$sampledate <-ymd(NTL.LTR$sampledate)
+NEON.NIWO$collectDate <-ymd(NEON.NIWO$collectDate)
 
 ```
 ## Define your theme
@@ -47,7 +63,16 @@ This exercise accompanies the lessons in Environmental Data Analytics on Data Vi
 ```{r build plot theme}
 #3
 
-```
+
+myfirsttheme <- theme_classic(base_size = 12)+
+  theme(
+    axis.text = element_text(family ="Boib", color="#0A1A2F"),
+        legend.position="top",
+  plot.background = element_rect(fill="#FAFAFA", color=NA), plot.title = element_text(color="#0A1A2F"))
+      
+theme_set(myfirsttheme) #setting this theme as default
+   
+    ```
 
 ## Create graphs
 For numbers 4-7, create ggplot graphs and adjust aesthetics to follow best practices for data visualization. Ensure your theme, color palettes, axes, and additional aesthetics are edited accordingly.
@@ -56,6 +81,17 @@ For numbers 4-7, create ggplot graphs and adjust aesthetics to follow best pract
 
 ```{r plot total P vs PO4}
 #4 
+
+PPO4_Plot <- ggplot(NTL.LTR, aes(x=tp_ug, y=po4, color=lakename)) + 
+  geom_point()+
+   geom_smooth(method='lm')+
+   ylim(0,50)+ 
+  scale_color_manual(values = c(
+    "Paul Lake" = "#1C3144",
+    "Peter Lake" = "#6B7F82"
+  ))
+ 
+print(PPO4_Plot)
 
 ```
 
@@ -70,6 +106,25 @@ Tips:
 
 ```{r Create boxplots}
 #5 
+
+temp_box <- ggplot(NTL.LTR, aes(x =factor(month), y=temperature_C, color=lakename))+
+  geom_boxplot()+
+print(temp_box)
+
+```
+
+```{r}
+tp_box <-ggplot(NTL.LTR, aes(x=factor(month), y=tp_ug, color=lakename))+
+  geom_boxplot()
+print(tp_box)
+
+```
+
+```{r}
+
+tn_box <-ggplot(NTL.LTR, aes(x=factor(month), y=tn_ug, color=lakename))+
+  geom_boxplot()
+print(tn_box)
 
 ```
 

@@ -128,6 +128,13 @@ print(tn_box)
 
 ```
 
+```{r Combing boxplots}
+
+box_grid_aligned <- plot_grid(temp_box, tp_box, tn_box, labels = "Monthly TN, TP, and Temp",  align ='h')
+
+print(box_grid_aligned)
+```
+
 Question: What do you observe about the variables of interest over seasons and between lakes? 
 
 > Answer: 

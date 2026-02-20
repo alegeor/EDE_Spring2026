@@ -68,13 +68,13 @@ NEON.NIWO$collectDate <-as.Date(NEON.NIWO$collectDate, format ="%Y-%m-%d")
 
 myfirsttheme <- theme_classic(base_size = 12)+
   theme(
-    axis.text = element_text(family ="Boib", color="#0A1A2F"),
+    axis.text = element_text(family ="Palatino", color="#0A1A2F"),
         legend.position="top",
   plot.background = element_rect(fill="#FAFAFA", color=NA), plot.title = element_text(color="#0A1A2F"))
       
 theme_set(myfirsttheme) #setting this theme as default
    
-    ```
+```
 
 ## Create graphs
 For numbers 4-7, create ggplot graphs and adjust aesthetics to follow best practices for data visualization. Ensure your theme, color palettes, axes, and additional aesthetics are edited accordingly.

@@ -52,24 +52,28 @@ here()
 #1b 
 
 #1c 
-EPAAirList <- list(
-  EPAAirOne <- read.csv(file=here('./Data/Raw/EPAair_O3_NC2018_raw.csv'),stringsAsFactors=TRUE),
-  EPAAirTwo <-read.csv(file=here('./Data/Raw/EPAair_O3_NC2019_raw.csv'),stringsAsFactors=TRUE),
-  EPAAirThree <- read.csv(file=here('./Data/Raw/EPAair_PM25_NC2018_raw.csv'),stringsAsFactors=TRUE),
+  EPAAirOne <- read.csv(file=here('./Data/Raw/EPAair_O3_NC2018_raw.csv'),stringsAsFactors=TRUE)
+  EPAAirTwo <-read.csv(file=here('./Data/Raw/EPAair_O3_NC2019_raw.csv'),stringsAsFactors=TRUE)
+  EPAAirThree <- read.csv(file=here('./Data/Raw/EPAair_PM25_NC2018_raw.csv'),stringsAsFactors=TRUE)
   EPAAirFour <- read.csv(file=here('./Data/Raw/EPAair_PM25_NC2019_raw.csv'),stringsAsFactors=TRUE)
-)
-    
-#str(EPAAirList)
+  
+  
+  EPAAirOne$Date <- mdy(EPAAirOne$Date)
+  EPAAirTwo$Date <-mdy (EPAAirTwo$Date) 
+  EPAAirThree$Date <- mdy(EPAAirThree$Date)
+  EPAAirFour$Date <-ymd(EPAAirFour$Date)
+  .
 
 #dim(EPAAirList) this returns null when used with list. only works with single objects? 
 
-#2 
 
 
 
 ```
 
 **TIP**: All four datasets should have the same number of columns but unique record counts (rows). Do your datasets follow this pattern?
+
+#nope. 
 
 
 ## Wrangle individual datasets to create processed files.
@@ -83,29 +87,11 @@ EPAAirList <- list(
 
 6. Save all four processed datasets in the Processed folder. Use the same file names as the raw files but replace "raw" with "processed".
 
-```{r questions 3 thru 4}
-#3
-EPAAirOne$Date <- mdy(EPAAirOne$Date)
-```
-
-```{r}
-EPAAirTwo$Date <-mdy (EPAAirTwo$Date)
-```
-
-```{r}
-EPAAirThree$Date <- mdy(EPAAirThree$Date)
-```
-
-```{r}
-EPAAirFour$Date <-ymd(EPAAirFour$Date)
-```
-
-
 #4
 
 
 ```{r}
-  EPAOne_DataFrame <- data.frame(
+  EPAOne_DataFrame <- select(
     Date = EPAAirOne$Date,
     Daily_AQI_Value= EPAAirOne$DAILY_AQI_VALUE, 
     Site_Name = EPAAirOne$Site.Name, 
@@ -116,7 +102,7 @@ EPAAirFour$Date <-ymd(EPAAirFour$Date)
     stringsAsFactors = TRUE
   )
 
- EPATwo_DataFrame <- data.frame(
+ EPATwo_DataFrame <- select(
     Date = EPAAirTwo$Date,
     Daily_AQI_Value= EPAAirTwo$DAILY_AQI_VALUE, 
     Site_Name = EPAAirTwo$Site.Name, 
@@ -128,7 +114,7 @@ EPAAirFour$Date <-ymd(EPAAirFour$Date)
    
  )
  
- EPAThree_DataFrame <- data.frame(
+ EPAThree_DataFrame <- select(
     Date = EPAAirThree$Date,
     Daily_AQI_Value= EPAAirThree$DAILY_AQI_VALUE, 
     Site_Name = EPAAirThree$Site.Name, 
@@ -138,6 +124,8 @@ EPAAirFour$Date <-ymd(EPAAirFour$Date)
     Site_Longitude = EPAAirThree$SITE_LONGITUDE, 
     stringsAsFactors = TRUE
  )
+ 
+ EPAAirFour <- 
  
  EPAFour_DataFrame <- EPAAirFour #I think I somehow overrode the raw file with the processed one 
  #and I don't know how to fix this!
@@ -289,6 +277,8 @@ EPA_Summaries <-
   EPA_Summary_AQS_Adjust %>% 
   group_by(Site_Name,month,year,PM2.5, Ozone) %>% 
   drop_na(Ozone)
+
+#summarize here
 
 #Question to John: Didn't we already computer the mean AQI in an earlier command? 
 #I'm probably misinterpreting something here.

@@ -15,10 +15,15 @@ editor_options:
 ## Set up your session
 
 ```{r setup workspace, message = FALSE}
-library(tidyverse); library(here)
+#install.packages("plyr")
+
+library(tidyverse)
+library(here) 
+library(lubridate)
+
+
 NTL.phys.data.PeterPaul <- read.csv(
-  here("Data/Processed/NTL-LTER_Lake_ChemistryPhysics_PeterPaul_Processed.csv"),
-  stringsAsFactors = T)
+  here("Data/Processed/NTL-LTER_Lake_ChemistryPhysics_PeterPaul_Processed.csv"))
 NTL.nutrient.data <- read.csv(
   here("Data/Raw/NTL-LTER_Lake_Nutrients_Raw.csv"),
   stringsAsFactors = TRUE)
@@ -36,6 +41,8 @@ class(NTL.phys.data.PeterPaul$sampledate)
 # Format sampledate as date
 NTL.phys.data.PeterPaul$sampledate <- ymd(NTL.phys.data.PeterPaul$sampledate)
 
+str(NTL.phys.data.PeterPaul)
+
 # Select Peter and Paul Lakes from the nutrient dataset
 NTL.nutrient.data.PeterPaul <- filter(NTL.nutrient.data, lakename == "Paul Lake" | lakename == "Peter Lake")
 
@@ -49,7 +56,9 @@ NTL.nutrient.data.PeterPaul <- droplevels(NTL.nutrient.data.PeterPaul)
 summary(NTL.nutrient.data.PeterPaul$lakename)
 summary(NTL.nutrient.data.PeterPaul$comments)
 class(NTL.nutrient.data.PeterPaul$sampledate)
-NTL.nutrient.data.PeterPaul$sampledate <- as.Date(NTL.nutrient.data.PeterPaul$sampledate, format = "%m/%d/%y")
+NTL.nutrient.data.PeterPaul$sampledate <-ymd(NTL.nutrient.data.PeterPaul$sampledate)
+  
+ # as.Date(NTL.nutrient.data.PeterPaul$sampledate, format = "%y/%m/%d")
 
 NTL.nutrient.data.PeterPaul <- 
   NTL.nutrient.data.PeterPaul %>% #
@@ -90,7 +99,7 @@ We will work with the new functions from `tidyr`. For gather we will use `pivot_
 # Gather nutrient data into one column using pivot_longer
 NTL.nutrient.data.PeterPaul.gathered <- pivot_longer(NTL.nutrient.data.PeterPaul.subset,tn_ug:po4, names_to = "nutrient", values_to = "concentration")
 
-NTL.nutrient.data.PeterPaul.gathered <- subset(NTL.nutrient.data.PeterPaul.gathered, !is.na(concentration))
+NTL.nutrient.data.PeterPaul.gathered <- subset(NTL.nutrient.data.PeterPaul.gathered,!is.na(concentration))
 count(NTL.nutrient.data.PeterPaul.gathered, nutrient)
 
 write.csv(NTL.nutrient.data.PeterPaul.gathered, row.names = FALSE, 
@@ -168,8 +177,7 @@ dim(LitterTrap)
 LitterTrap <- LitterTrap %>%
   select(plotID:trapID, collectDate, functionalGroup:qaDryMass, subplotID:geodeticDatum)
 
-write.csv(LitterTrap, row.names = FALSE, 
-          file =(here("Data/Processed/NEON_NIWO_Litter_mass_trap_Processed.csv")))
+write.csv(LitterTrap, row.names = FALSE, file=here("Data/Processed/NEON_NIWO_Litter_mass_trap_Processed.csv"))
 ```
 
 ## Split-Apply-Combine

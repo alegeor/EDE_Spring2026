@@ -16,6 +16,7 @@ editor_options:
 ## Set up
 ```{r, message = FALSE}
 library(tidyverse)
+library(lubridate)
 library(here); here()
 
 #install.packages("rvest")
@@ -93,7 +94,7 @@ With this id known, we can extract it's value in a two-step process. First we us
 
 ```{r scrape.some.data}
 the_registrant <- webpage %>% 
-  html_nodes(".table tr:nth-child(1) td:nth-child(2)") %>% 
+  html_nodes(".table tr:nth-child(1) td:nth-child(2)") %>% #this selects everything w/ this tag
   html_text()
 the_registrant
 ```
@@ -106,11 +107,13 @@ In the code chunk below, see if you can extract the Facility Name and Facility T
 
 ```{r scraping.exercise.1}
 the_facility_name <- webpage %>% 
-  html_nodes() %>% 
+  html_nodes("tr:nth-child(2) th+ .left:nth-child(2)") %>% 
   html_text()
 the_facility_name
 
-the_facility_type <- webpage  
+the_facility_type <- webpage %>% 
+  html_nodes("tr:nth-child(2) .left~ .left+ td.left") %>% 
+html_text()
   
   
 the_facility_type
@@ -143,11 +146,12 @@ df_withdrawals <- data.frame("Month" = c(1,7,2,8,3,9,4,10,5,11,6,12), #<--NOTE: 
                              "Max_Withdrawals_mgd" = as.numeric(max_withdrawals))
 
 #Modify the dataframe to include the facility name and type as well as the date (as date object)
+
 df_withdrawals <- df_withdrawals %>% 
   mutate(Registrant = !!the_registrant,
-         Facility_name = !!the_facility_name,
+         Facility_name = !!the_facility_name, # the !! is saying this refers to a variable, not string.
          Facility_type = !!the_facility_type,
-         Date = my(paste(Month,"-",Year)))
+         Date = my(paste(Month,"-",Year))) #this seems useful but idk commands. 
 
 #Plot 
 ggplot(df_withdrawals,aes(x=Date,y=Avg_Withdrawals_mgd)) + 
@@ -338,6 +342,8 @@ the_years <- rep.int(2020,length(the_facility_ids_subset))
 #"Map" the "scrape.it" function to retrieve data for all these
 dfs_2020 <- map2(the_years, the_facility_ids_subset, scrape.it) 
 
+#these ^^ two lists have to be the same size. 
+
 #Conflate the returned list of dataframes into a single one
 df_2020 <- bind_rows(dfs_2020)
 
@@ -356,6 +362,8 @@ To scrape for both years and sites, we need to dig deeper into Purrr's map funct
 #Create a subset of facilities
 the_facilities <- sample(the_facility_ids,3)
 the_years  <-  c(2018,2019,2020)
+
+#this will create 2018 for site 1, 2019 for site 2, and 2020 for site 3.. no thanks!
 
 #Use the cross2 function to generate a list of unique combos of year and facility ids
 #Then send apply our scrape.it function to grab values into a list of dataframes

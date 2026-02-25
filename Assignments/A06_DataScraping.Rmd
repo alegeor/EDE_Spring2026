@@ -66,6 +66,8 @@ In the code chunk below scrape these values, assigning them to four separate var
 ```{r scrape.the.data}
 #3 
 
+#1. System Information Section
+
 # scraping water system name
 water_system_name <- homepage %>% 
 html_nodes("div+ table tr:nth-child(1) td:nth-child(2)") %>% 
@@ -83,6 +85,14 @@ ownership <- homepage %>%
   html_nodes("div+ table tr:nth-child(2) td:nth-child(4)") %>% 
   html_text()
 ownership
+
+#3. Water Supply Sources Section
+
+#Maximum Day Use 
+maximum_day_use <- homepage %>% 
+  html_nodes("th~ td+ td") %>% 
+  html_text()
+
 ```
 
 
@@ -97,8 +107,38 @@ ownership
 ```{r create.a.dataframe.from.scraped.data}
 #4 
 
+#frame with just numeric variablea
+water.frame <- data.frame(
+  "Month"=rep(1:12), 
+  "Year"=rep(2024,12), 
+  "maximum_daily_use"=as.numeric(maximum_day_use)
+)
 
-#5 
+#adding string variables with mutate 
+water.frame.1 <- water.frame %>% 
+  mutate(
+    Contact_Person = !!contact_mensch, 
+    Owner=!!ownership, 
+    Water_System =!!water_system_name,
+    Date = my(paste0(Month, "-", Year))
+  )
+
+#5: Plot 
+water.plot <- ggplot(water.frame.1, aes(Date, maximum_daily_use))+
+  geom_line()+
+  labs(
+    title =paste(water_system_name,"Maximum Daily Water Use in 2020"),
+    y= "Maximum Water Use (MGD)", 
+    X= "Date"
+  )+
+  scale_x_date(
+    date_breaks = "1 month", 
+    date_labels = "%b"
+  )
+  
+print(water.plot)
+
+
 
 
 ```
@@ -112,6 +152,38 @@ ownership
 
 ```{r construct.a.scraping.function}
 #6. 
+
+
+#automating before building function
+stripped.report.url <- ("https://www.ncwater.org/WUDC/app/LWSP/report.php?pwsid")
+pwsid <- "03-32-010"
+year<- 2024
+fancy.report.url <- paste0(stripped.report.url, pwsid,"&year=",year)
+
+print(fancy.report.url)
+
+
+#function 
+fancy.scraper <- function(year, pwsid)
+  
+  
+#function, go scrape 
+home.page <- read_html(paste0(fancy.report.url))
+
+#tagz
+
+
+
+
+
+
+  
+
+
+
+
+
+
 
 ```
 

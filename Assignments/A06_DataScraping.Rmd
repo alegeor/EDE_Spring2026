@@ -1,6 +1,6 @@
 ---
 title: "Assignment 10: Data Scraping"
-author: "Student Name"
+author: "Lex Clay"
 output: pdf_document
 editor_options: 
   chunk_output_type: console
@@ -45,7 +45,8 @@ Indicate this website as the as the URL to be scraped. (In other words, read the
 ```{r set.the.scraping.website}
 #2 
 
-homepage <- read_html('https://www.ncwater.org/WUDC/app/LWSP/report.php?pwsid=03-32-010&year=2024')
+homepage <- read_html('https://www.ncwater.org/WUDC/app/LWSP/report.php?pwsid=
+                      03-32-010&year=2024')
 
 ```
 
@@ -155,35 +156,63 @@ print(water.plot)
 
 
 #automating before building function
-stripped.report.url <- ("https://www.ncwater.org/WUDC/app/LWSP/report.php?pwsid")
+stripped.report.url <- ("https://www.ncwater.org/WUDC/app/LWSP/report.php?pwsid=")
 pwsid <- "03-32-010"
-year<- 2024
-fancy.report.url <- paste0(stripped.report.url, pwsid,"&year=",year)
-
-print(fancy.report.url)
-
+Year<- 2024
 
 #function 
-fancy.scraper <- function(year, pwsid)
+
+fancy.scraper <- function(Year, pwsid){
+  
+  #website   
+ # fancy.report.url <- paste0(stripped.report.url, pwsid,"&year=",Year) #tried to run this first but it triggered error msg. 
+  
+  fancy.report.url <- read_html(paste0("https://www.ncwater.org/WUDC/app/LWSP
+                                       /report.php?pwsid=", pwsid,"&year=",Year))
+  
+  #report variables 
+  water_system_name_tag <- "div+ table tr:nth-child(1) td:nth-child(2)"
+  contact_mensch_tag <- "div+ table tr:nth-child(4) td:nth-child(2)" 
+  ownership_tag <- "div+ table tr:nth-child(2) td:nth-child(4)"
+  maximum_day_use_tag <-"th~ td+ td"
+  
+  #scrapified tags 
+  
+  water_system_name <- fancy.report.url %>% 
+      html_nodes(water_system_name_tag) %>% 
+      html_text()
+    water_system_name
+
+  contact_mensch <-fancy.report.url %>% 
+    html_nodes(contact_mensch_tag) %>% 
+    html_text()
+  contact_mensch
+
+  ownership <- fancy.report.url %>%
+    html_nodes(ownership_tag) %>% 
+    html_text()
+  ownership
+  
+  maximum_day_use <- fancy.report.url %>%
+    html_nodes(maximum_day_use_tag) %>%
+    html_text() 
+    maximum_day_use
   
   
-#function, go scrape 
-home.page <- read_html(paste0(fancy.report.url))
-
-#tagz
-
-
-
-
-
-
+  max_water_master_frame <- data.frame(
+    "Month"=rep(1:12), 
+    "Year"=rep(Year, 12), 
+    "Max Daily Water Use"=as.numeric(maximum_day_use)) %>% 
+      mutate(
+        Contact_Person =!!contact_mensch, 
+        Ownership=!!ownership, 
+        Water_System_Name =!!water_system_name, 
+        Date=my(paste(Month, "-", Year))
+      )
+      
+return(max_water_master_frame)
   
-
-
-
-
-
-
+}
 
 ```
 
@@ -191,6 +220,9 @@ home.page <- read_html(paste0(fancy.report.url))
 
 ```{r fetch.and.plot.Durham.2020.data}
 #7 
+ 
+durham.water.2020 <- fancy.scraper(2020, "03-32-010")
+glimpse(durham.water.2020)
 
 ```
 
@@ -198,6 +230,38 @@ home.page <- read_html(paste0(fancy.report.url))
 
 ```{r fetch.and.plot.Cary.2020.data}
 #8 
+
+cary.water.2020 <-fancy.scraper(2020,"03-92-020")
+view(cary.water.2020)
+
+cary.durham.2020 <- bind_rows(durham.water.2020, cary.water.2020)
+
+#plot it 
+
+cary.durham.2020.plot <- ggplot(cary.durham.2020, aes(Date, Max.Daily.Water.Use, color=Water_System_Name))+
+  geom_line()+
+  labs(
+    title =paste("Maximum Daily Water Use in 2020"),
+    y= "Maximum Water Use (MGD)", 
+    x= "Month", 
+    color="Water System Location"
+  )+
+  scale_x_date(
+    date_breaks = "1 month", 
+    date_labels = "%b"
+  )+
+  theme(
+    panel.background = element_rect(fill="#f0ead6"), 
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(), 
+  )+
+  geom_line(size=1.25)+
+  scale_color_manual(
+    values = c("#023436", "#75B09C")
+  )
+  
+
+print(cary.durham.2020.plot)
 
 ```
 
@@ -208,9 +272,31 @@ home.page <- read_html(paste0(fancy.report.url))
 
 ```{r fetch.and.plot.Cary.multiyear.data }
 #9 
+The_Years <-rep(2018:2023)
+Cary_PWSID_ID <- "03-92-020"
 
+
+Cary_Almost_All <- map(The_Years, fancy.scraper, pwsid = Cary_PWSID_ID)
+
+Cary_All <- bind_rows(Cary_Almost_All)
+
+Cary_All_Map <- ggplot(Cary_All, aes(Date, Max.Daily.Water.Use)
+                       )+
+  geom_line()+
+  geom_smooth(method = "loess", se=FALSE)+ 
+  labs(
+    title = paste("Max Daily Water Usage Data:", The_Years[1], "-", 
+                  The_Years[length(The_Years)]
+     ),
+    x="Date",
+    y="Max Daily Water Use (mgd)"
+    )
+  
+
+print(Cary_All_Map)
 ```
 
 Question: Just by looking at the plot (i.e. not running statistics), does Cary have a trend in water usage over time?
 > Answer:
->
+> It is visually subtle, but the max water usage increases around 2021, peaks
+between 2022-2023, and then returns to pre-2021 levels. 

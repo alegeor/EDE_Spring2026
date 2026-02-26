@@ -45,8 +45,7 @@ Indicate this website as the as the URL to be scraped. (In other words, read the
 ```{r set.the.scraping.website}
 #2 
 
-homepage <- read_html('https://www.ncwater.org/WUDC/app/LWSP/report.php?pwsid=
-                      03-32-010&year=2024')
+homepage <- read_html('https://www.ncwater.org/WUDC/app/LWSP/report.php?pwsid=03-32-010&year=2024')
 
 ```
 
@@ -167,8 +166,7 @@ fancy.scraper <- function(Year, pwsid){
   #website   
  # fancy.report.url <- paste0(stripped.report.url, pwsid,"&year=",Year) #tried to run this first but it triggered error msg. 
   
-  fancy.report.url <- read_html(paste0("https://www.ncwater.org/WUDC/app/LWSP
-                                       /report.php?pwsid=", pwsid,"&year=",Year))
+  fancy.report.url <- read_html(paste0("https://www.ncwater.org/WUDC/app/LWSP/report.php?pwsid=", pwsid,"&year=",Year))
   
   #report variables 
   water_system_name_tag <- "div+ table tr:nth-child(1) td:nth-child(2)"
@@ -298,5 +296,4 @@ print(Cary_All_Map)
 
 Question: Just by looking at the plot (i.e. not running statistics), does Cary have a trend in water usage over time?
 > Answer:
-> It is visually subtle, but the max water usage increases around 2021, peaks
-between 2022-2023, and then returns to pre-2021 levels. 
+> It is visually subtle, but the max water usage increases around 2021, peaks between 2022-2023, and then returns to pre-2021 levels. 

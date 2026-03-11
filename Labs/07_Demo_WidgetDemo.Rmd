@@ -1,0 +1,20 @@
+---
+title: Interactive Rmd
+output: html_document
+runtime: shiny
+---
+  
+```{r}
+install.packages("shiny")
+
+```
+
+  
+```{r, echo = FALSE}
+numericInput("n",  #can change n to "nonsuch"
+"How many cars?", 5)
+renderTable({
+head(cars, input$n) #then change it here to "nonsuch" 
+})
+```
+

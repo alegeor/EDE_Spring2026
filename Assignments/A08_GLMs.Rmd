@@ -84,34 +84,27 @@ NTL.LTR.wrangled <- NTL.LTR.Raw %>%
 
 # Noodling with this version that adds a linear regression line AFTER the plot is created but not to the dataframe itself...see the lm() version after this..
 
-July.NTL.LTR.scatter <- ggplot(NTL.LTR.wrangled, aes(x=depth, y=temperature_C, color=lakename))+labs(
+July.NTL.LTR.scatter <- ggplot(NTL.LTR.wrangled, aes(x=depth, y=temperature_C))+labs(
   x="Depth", 
   y="Temperature"
 )+
+  ylim(0,35)+
   theme(
-    panel.background = element_rect(fill = "#002020")
+    panel.background = element_rect(fill = "#002020"),
+    panel.grid = element_blank()
   )+
-  geom_point(alpha=0.3, size=1)
+  geom_smooth(method="lm", se=FALSE, color="purple")+
+  geom_point(aes(color=lakename), alpha=0.3, size=1.3)
 
 print(July.NTL.LTR.scatter)
 
-#Adding facet_wrap option for visual decluttering
-
-NTL.LTR.faceted <- ggplot(NTL.LTR.wrangled, aes(x=depth, y=temperature_C, color=lakename))+
-  geom_point(alpha=0.3, size=1)+ #this is very useful
-  geom_smooth(method=lm)+
-  facet_wrap(~lakename)+
-   theme(
-    panel.background = element_rect(fill = "#002020"))
-
-print(NTL.LTR.faceted) 
 
 ```
 
 
 6. Interpret the figure. What does it suggest with regards to the response of temperature to depth? Do the distribution of points suggest about anything about the linearity of this trend?
 
-> Answer: The figure(s) suggest(s) that there is a inverse relationship between depth and temperature. As depth increases, temperature tends to decrease. 
+> Answer: The figure(s) suggest(s) that there is a inverse relationship between depth and temperature. As depth increases, temperature tends to decrease. The intercept expects that when the value of the depth is 0 - so at the surface - the temperature will be 21.5 degrees celsius. 
 
 7. Perform a linear regression to test the relationship and display the results.
 
@@ -127,7 +120,7 @@ summary(July.Regression.NTL.LTR)
 
 8. Interpret your model results in words. Include how much of the variability in temperature is explained by changes in depth, the degrees of freedom on which this finding is based, and the statistical significance of the result. Also mention how much temperature is predicted to change for every 1m change in depth. 
 
-> Answer: The P value is 2.2e-16, which is basically 0 == statistically significant. The slope is 
+> Answer:The slope indicates that with each depth increase of 1, the temperature decreases by -1.9. The P value is 2.2e-16, which is basically 0 == statistically significant. 
 
 ---
 
@@ -142,19 +135,28 @@ Let's tackle a similar question from a different approach. Here, we want to expl
 ```{r temperature.model}
 #9
 
+#the smaller the AIC value, the better the model performance is. AIC is run by default 
+#using the function step(). The best model uses as few predictors as possible. 
 
+#running the linear regression
+temp.predictors <- lm(data=NTL.LTR.wrangled, temperature_C~year4+daynum+depth)
+
+#run AIC 
+my.aic <-step(temp.predictors)
 
 #10
 
+#running the multiple linear regression  w/ depth and daynum because AIC sky rockets when either of those are removed. Meanwhile year4 AIC is the same as <none> so it has no stat. influence. 
+
+good.model <- lm(data=NTL.LTR.wrangled, temperature_C~daynum+depth)
+
+summary(good.model)
 
 ```
 
 11. What is the final set of explanatory variables that the AIC method suggests we use to predict temperature in our multiple regression? How much of the observed variance does this model explain? Is this an improvement over the model using only depth as the explanatory variable?
 
-> Answer: 
-
-
-
+> Answer: I ran the the linear regression above  w/ depth and daynum because AIC sky rockets when either of those are removed. Meanwhile year4 AIC is the same as <none> so it has no stat. influence. This model - good.model - has a higher R-squared value than the model using only depth (.778 vs .743) and therefore is a better indicator of temperature variance. 
 ---
 ## Analysis of Variance
 
@@ -163,20 +165,44 @@ Let's tackle a similar question from a different approach. Here, we want to expl
 ```{r anova.model}
 #12
 
+#Wrangle
+lake.temps <- NTL.LTR.wrangled %>% 
+  group_by(lakename) %>% 
+  summarise(average_temp=mean(temperature_C))
+
+summary(lake.temps) #this shows the average temps for each lake but now we need to use anova/lm to determine if those differences are significant. 
+
+anova.temp <- aov(data=NTL.LTR.wrangled, temperature_C ~ lakename)
+
+lm.model <- lm(data=NTL.LTR.wrangled, temperature_C ~ lakename)
+
+summary(anova.temp)
+summary(lm.model)
 
 ```
 
 13. Is there a significant difference in mean temperature among the lakes? Report your findings. 
 
-> Answer: 
-
-
+> Answer: A low F-value of 1.098 indicates that the difference in mean temperature among the lakes varies about as much as the temperature within the lakes and the the P value .357 suggests that temperature variance between lakes is likely random. The R-squared value indicates that the lake name only accounts for about 1% of temperature reading. Ergo, not statiscally significant. 
 
 14. Create a graph that depicts temperature by depth, with a separate color for each lake. Add a geom_smooth (method = "lm", se = FALSE) for each lake. Make your points 50 % transparent. Adjust your y axis limits to go from 0 to 35 degrees. Clean up your graph to make it pretty. 
 
 ```{r scatterplot.2}
-#14.
+#14
 
+
+NTL.LTR.faceted <- ggplot(NTL.LTR.wrangled, aes(x=depth, y=temperature_C, color=lakename))+
+  geom_point(alpha=0.5, size=1)+ 
+  geom_smooth(method="lm", se=FALSE)+
+  ylim(0,35)+
+  facet_wrap(~lakename)+
+   theme(
+    panel.background = element_rect(fill = "#002020"),
+      panel.grid = element_blank()
+   )
+
+#still need to remove panel grid here 
+print(NTL.LTR.faceted) 
 
 ```
 
@@ -185,25 +211,38 @@ Let's tackle a similar question from a different approach. Here, we want to expl
 ```{r tukey.test}
 #15
 
-
+TukeyHSD(anova.temp)
 ```
 
 16.From the findings above, which lakes have the same mean temperature, statistically speaking, as Peter Lake? Does any lake have a mean temperature that is statistically distinct from all the other lakes?
 
->Answer:
-
+>Answer: Since all lakes have a P value far above 0.05, none have a statistically distinct mean temperature. The lakes are pretty much indistinguishable via their temperature data. 
  
 
 17. If we were just looking at Peter Lake and Paul Lake. What's another test we might explore to see whether they have distinct mean temperatures? 
 
->Answer: 
-
+>Answer: A T-test. 
 
 
 18. Wrangle the July data to include only records for Crampton Lake and Ward Lake. Run the two-sample T-test on these data to determine whether their July temperature are same or different. What does the test say? Are the mean temperatures for the lakes equal? Does that match you answer for part 16?
 
 ```{r t.test}
 
+#Crampton does not have any July data which is why it was dropped by na.omit() from the raw dataset. I've used Tuesday Lake instead. 
+
+ward.tuesday <- NTL.LTR.wrangled %>% 
+  filter(lakename %in% c("Ward Lake","Tuesday Lake"))
+
+ward.tuesday.test <- t.test(data=ward.tuesday, temperature_C ~lakename)
+
+ward.tuesday.test
+
+
+#mean in group Tuesday Lake    mean in group Ward Lake 
+#                 10.11667                   13.93103 
+
+
+# Ward Lake-Tuesday Lake       3.8143678 
 ```
 
->Answer: 
+>Answer: The Tukey test says the diff between Ward Lake-Tuesday Lake is 3.814, which matches the t.test results to the T. (Sorry, I had to.)

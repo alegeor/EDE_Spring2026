@@ -1,9 +1,8 @@
 ---
-title: 'Assignment 10: Spatial Analysis in R'
+title: "Assignment 10: Spatial Analysis in R"
 author: "Lex Clay"
-output:
-  html_document: default
-editor_options:
+output: html_document
+editor_options: 
   chunk_output_type: console
 ---
 
@@ -292,7 +291,7 @@ Washington_Plot_GG <- Washington_20kGages_SF %>%
   geom_sf(data = Washington_20kGages_SF, aes(size = gage_ht),color="#7b2d8e", size=2.5, alpha = 0.7)+
   geom_sf(data=Washington_Gages_SF, aes(size = gage_ht),color="#d4451a")+
   labs(
-    title = "Stream Gages Near Washington Nebraska",
+    title = "Stream Gages Near and In Washington County Nebraska",
     subtitle ="Gages within 20 km of Washington County"
   )+ 
   theme(
@@ -303,7 +302,7 @@ Washington_Plot_GG <- Washington_20kGages_SF %>%
     axis.text = element_text(color = "gray50", size = 8)
   )
 
-print(Washington_Plot_GG)
+print(Washington_Plot)
 
 ```
 

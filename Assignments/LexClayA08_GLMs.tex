@@ -1,0 +1,753 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+]{article}
+\usepackage{xcolor}
+\usepackage[margin=2.54cm]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Assignment 8: GLMs (Linear Regressios, ANOVA, \& t-tests)},
+  pdfauthor={Lex Clay},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Assignment 8: GLMs (Linear Regressios, ANOVA, \& t-tests)}
+\author{Lex Clay}
+\date{Spring 2026}
+
+\begin{document}
+\maketitle
+
+\subsection{OVERVIEW}\label{overview}
+
+This exercise accompanies the lessons in Environmental Data Analytics on
+generalized linear models.
+
+\subsection{Directions}\label{directions}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Rename this file
+  \texttt{\textless{}FirstLast\textgreater{}\_A08\_GLMs.Rmd} (replacing
+  \texttt{\textless{}FirstLast\textgreater{}} with your first and last
+  name).
+\item
+  Change ``Student Name'' on line 3 (above) with your name.
+\item
+  Work through the steps, \textbf{creating code and output} that fulfill
+  each instruction.
+\item
+  Be sure to \textbf{answer the questions} in this assignment document.
+\item
+  When you have completed the assignment, \textbf{Knit} the text and
+  code into a single PDF file.
+\end{enumerate}
+
+\textbf{!! AI generated code should NOT be used in this assignment}
+
+\begin{quote}
+NOTE: For this assignment, you can skip tests for any of the assumptions
+required to run the models.
+\end{quote}
+
+\subsection{Set up your session}\label{set-up-your-session}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Set up your session. Check your working directory. Load the tidyverse,
+  agricolae and other needed packages. Import the \emph{raw} NTL-LTER
+  raw data file for chemistry/physics
+  (\texttt{NTL-LTER\_Lake\_ChemistryPhysics\_Raw.csv}). Set date columns
+  to date objects.
+\item
+  Build a ggplot theme and set it as your default theme.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#1}
+
+\CommentTok{\#install.packages("agricolae")}
+
+\FunctionTok{library}\NormalTok{(tidyverse)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## -- Attaching core tidyverse packages ------------------------ tidyverse 2.0.0 --
+## v dplyr     1.2.0     v readr     2.1.5
+## v forcats   1.0.0     v stringr   1.6.0
+## v ggplot2   4.0.0     v tibble    3.3.1
+## v lubridate 1.9.4     v tidyr     1.3.2
+## v purrr     1.1.0     
+## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()
+## i Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(agricolae)}
+\FunctionTok{library}\NormalTok{(here)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## here() starts at C:/Users/lexcl/OneDrive/Documents/EDE/EDE_Spring2026
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(corrplot)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## corrplot 0.95 loaded
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#2}
+
+\NormalTok{NTL.LTR.Raw }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\FunctionTok{here}\NormalTok{(}\StringTok{"./Data/Raw/NTL{-}LTER\_Lake\_ChemistryPhysics\_Raw.csv"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Simple regression}\label{simple-regression}
+
+Our first research question is: Does mean lake temperature recorded
+during July change with depth across all lakes?
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\item
+  State the null and alternative hypotheses for this question:
+  \textgreater{} Answer: H0: Depth across all lakes has no effect on
+  lake temperature recorded in July. Ha: Lake temperature recorded in
+  July decreases with depth across all lakes.
+\item
+  Wrangle your NTL-LTER dataset with a pipe function so that the records
+  meet the following criteria:
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  Only dates in July.
+\item
+  Only the columns: \texttt{lakename}, \texttt{year4}, \texttt{daynum},
+  \texttt{depth}, \texttt{temperature\_C}
+\item
+  Only complete cases (i.e., remove NAs)
+\end{itemize}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{4}
+\tightlist
+\item
+  Visualize the relationship among the two continuous variables with a
+  scatter plot of temperature by depth. Add a smoothed line showing the
+  linear model, and limit temperature values from 0 to 35 °C. Make this
+  plot look pretty and easy to read.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Extract Date to get July }
+
+\NormalTok{NTL.LTR.Raw}\SpecialCharTok{$}\NormalTok{sampledate }\OtherTok{=} \FunctionTok{ymd}\NormalTok{(NTL.LTR.Raw}\SpecialCharTok{$}\NormalTok{sampledate)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: 33138 failed to parse.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{NTL.LTR.Raw}\SpecialCharTok{$}\NormalTok{month }\OtherTok{\textless{}{-}} \FunctionTok{month}\NormalTok{(NTL.LTR.Raw}\SpecialCharTok{$}\NormalTok{sampledate) }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#4}
+
+\CommentTok{\#wrangling the raw data set and then applying lm()}
+
+\NormalTok{NTL.LTR.wrangled }\OtherTok{\textless{}{-}}\NormalTok{ NTL.LTR.Raw }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{select}\NormalTok{(lakename, year4, daynum, depth, temperature\_C, month) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(month}\SpecialCharTok{==}\DecValTok{07}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{na.omit}\NormalTok{()}
+
+\CommentTok{\#5}
+
+\NormalTok{July.NTL.LTR.scatter }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(NTL.LTR.wrangled, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{depth, }\AttributeTok{y=}\NormalTok{temperature\_C))}\SpecialCharTok{+}\FunctionTok{labs}\NormalTok{(}
+  \AttributeTok{x=}\StringTok{"Depth"}\NormalTok{, }
+  \AttributeTok{y=}\StringTok{"Temperature"}
+\NormalTok{)}\SpecialCharTok{+}
+  \FunctionTok{ylim}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{35}\NormalTok{)}\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}
+    \AttributeTok{panel.background =} \FunctionTok{element\_rect}\NormalTok{(}\AttributeTok{fill =} \StringTok{"\#002020"}\NormalTok{),}
+    \AttributeTok{panel.grid =} \FunctionTok{element\_blank}\NormalTok{()}
+\NormalTok{  )}\SpecialCharTok{+}
+  \FunctionTok{geom\_smooth}\NormalTok{(}\AttributeTok{method=}\StringTok{"lm"}\NormalTok{, }\AttributeTok{se=}\ConstantTok{FALSE}\NormalTok{, }\AttributeTok{color=}\StringTok{"purple"}\NormalTok{)}\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{color=}\NormalTok{lakename), }\AttributeTok{alpha=}\FloatTok{0.3}\NormalTok{, }\AttributeTok{size=}\FloatTok{1.3}\NormalTok{)}
+
+\FunctionTok{print}\NormalTok{(July.NTL.LTR.scatter)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `geom_smooth()` using formula = 'y ~ x'
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Removed 6 rows containing missing values or values outside the scale range
+## (`geom_smooth()`).
+\end{verbatim}
+
+\pandocbounded{\includegraphics[keepaspectratio]{LexClayA08_GLMs_files/figure-latex/scatterplot-1.pdf}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{5}
+\tightlist
+\item
+  Interpret the figure. What does it suggest with regards to the
+  response of temperature to depth? Do the distribution of points
+  suggest about anything about the linearity of this trend?
+\end{enumerate}
+
+\begin{quote}
+Answer: The figure(s) suggest(s) that there is a inverse relationship
+between depth and temperature. As depth increases, temperature tends to
+decrease. The intercept expects that when the value of the depth is 0 -
+so at the surface - the temperature will be 21.5 degrees celsius.
+\end{quote}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{6}
+\tightlist
+\item
+  Perform a linear regression to test the relationship and display the
+  results.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#7}
+
+\NormalTok{July.Regression.NTL.LTR }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(}\AttributeTok{data=}\NormalTok{NTL.LTR.wrangled, temperature\_C }\SpecialCharTok{\textasciitilde{}}\NormalTok{ depth) }
+
+\FunctionTok{summary}\NormalTok{(July.Regression.NTL.LTR)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = temperature_C ~ depth, data = NTL.LTR.wrangled)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -7.7641 -2.8586 -0.3779  2.6155  7.7928 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)  21.5054     0.3261   65.95   <2e-16 ***
+## depth        -1.9138     0.0567  -33.76   <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 3.65 on 392 degrees of freedom
+## Multiple R-squared:  0.744,  Adjusted R-squared:  0.7434 
+## F-statistic:  1139 on 1 and 392 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{7}
+\tightlist
+\item
+  Interpret your model results in words. Include how much of the
+  variability in temperature is explained by changes in depth, the
+  degrees of freedom on which this finding is based, and the statistical
+  significance of the result. Also mention how much temperature is
+  predicted to change for every 1m change in depth.
+\end{enumerate}
+
+\begin{quote}
+Answer:The slope indicates that with each depth increase of 1, the
+temperature decreases by -1.9. The P value is 2.2e-16, which is
+basically 0 == statistically significant.
+\end{quote}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Multiple regression}\label{multiple-regression}
+
+Let's tackle a similar question from a different approach. Here, we want
+to explore what might the best set of predictors for lake temperature in
+July across the monitoring period at the North Temperate Lakes LTER.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{8}
+\item
+  Run an AIC to determine what set of explanatory variables (year4,
+  daynum, depth) is best suited to predict temperature.
+\item
+  Run a multiple regression on the recommended set of variables.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#9}
+
+\CommentTok{\#the smaller the AIC value, the better the model performance is. AIC is run by default }
+\CommentTok{\#using the function step(). The best model uses as few predictors as possible. }
+
+\CommentTok{\#running the linear regression}
+\NormalTok{temp.predictors }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(}\AttributeTok{data=}\NormalTok{NTL.LTR.wrangled, temperature\_C}\SpecialCharTok{\textasciitilde{}}\NormalTok{year4}\SpecialCharTok{+}\NormalTok{daynum}\SpecialCharTok{+}\NormalTok{depth)}
+
+\CommentTok{\#run AIC }
+\NormalTok{my.aic }\OtherTok{\textless{}{-}}\FunctionTok{step}\NormalTok{(temp.predictors)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Start:  AIC=966.18
+## temperature_C ~ year4 + daynum + depth
+## 
+##          Df Sum of Sq     RSS     AIC
+## - year4   1      21.7  4505.8  966.08
+## <none>                 4484.0  966.18
+## - daynum  1     638.3  5122.3 1016.62
+## - depth   1   15263.4 19747.5 1548.29
+## 
+## Step:  AIC=966.08
+## temperature_C ~ daynum + depth
+## 
+##          Df Sum of Sq     RSS     AIC
+## <none>                 4505.8  966.08
+## - daynum  1       717  5222.8 1022.27
+## - depth   1     15242 19747.5 1546.29
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#10}
+
+\CommentTok{\#running the multiple linear regression  w/ depth and daynum because AIC sky rockets when either of those are removed. Meanwhile year4 AIC is the same as \textless{}none\textgreater{} so it has no stat. influence. }
+
+\NormalTok{good.model }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(}\AttributeTok{data=}\NormalTok{NTL.LTR.wrangled, temperature\_C}\SpecialCharTok{\textasciitilde{}}\NormalTok{daynum}\SpecialCharTok{+}\NormalTok{depth)}
+
+\FunctionTok{summary}\NormalTok{(good.model)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = temperature_C ~ daynum + depth, data = NTL.LTR.wrangled)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -8.6397 -2.6632 -0.3101  2.5174  8.0771 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) 11.198599   1.341363   8.349 1.21e-15 ***
+## daynum       0.054660   0.006929   7.888 3.10e-14 ***
+## depth       -1.917670   0.052729 -36.368  < 2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 3.395 on 391 degrees of freedom
+## Multiple R-squared:  0.7792, Adjusted R-squared:  0.778 
+## F-statistic: 689.8 on 2 and 391 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{10}
+\tightlist
+\item
+  What is the final set of explanatory variables that the AIC method
+  suggests we use to predict temperature in our multiple regression? How
+  much of the observed variance does this model explain? Is this an
+  improvement over the model using only depth as the explanatory
+  variable?
+\end{enumerate}
+
+\subsection{\texorpdfstring{\textgreater{} Answer: I ran the the linear
+regression above w/ depth and daynum because AIC sky rockets when either
+of those are removed. Meanwhile year4 AIC is the same as so it has no
+stat. influence. This model - good.model - has a higher R-squared value
+than the model using only depth (.778 vs .743) and therefore is a better
+indicator of temperature
+variance.}{\textgreater{} Answer: I ran the the linear regression above w/ depth and daynum because AIC sky rockets when either of those are removed. Meanwhile year4 AIC is the same as  so it has no stat. influence. This model - good.model - has a higher R-squared value than the model using only depth (.778 vs .743) and therefore is a better indicator of temperature variance.}}\label{answer-i-ran-the-the-linear-regression-above-w-depth-and-daynum-because-aic-sky-rockets-when-either-of-those-are-removed.-meanwhile-year4-aic-is-the-same-as-so-it-has-no-stat.-influence.-this-model---good.model---has-a-higher-r-squared-value-than-the-model-using-only-depth-.778-vs-.743-and-therefore-is-a-better-indicator-of-temperature-variance.}
+
+\subsection{Analysis of Variance}\label{analysis-of-variance}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{11}
+\tightlist
+\item
+  Now we want to see whether the different lakes have, on average,
+  different temperatures in the month of July. Run an ANOVA test to
+  complete this analysis. (No need to test assumptions of normality or
+  similar variances.) Create two sets of models: one expressed as an
+  ANOVA models and another expressed as a linear model (as done in our
+  lessons).
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#12}
+
+\CommentTok{\#Wrangle}
+\NormalTok{lake.temps }\OtherTok{\textless{}{-}}\NormalTok{ NTL.LTR.wrangled }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{group\_by}\NormalTok{(lakename) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{summarise}\NormalTok{(}\AttributeTok{average\_temp=}\FunctionTok{mean}\NormalTok{(temperature\_C))}
+
+\FunctionTok{summary}\NormalTok{(lake.temps) }\CommentTok{\#this shows the average temps for each lake but now we need to use anova/lm to determine if those differences are significant. }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    lakename          average_temp  
+##  Length:5           Min.   :10.12  
+##  Class :character   1st Qu.:10.56  
+##  Mode  :character   Median :12.46  
+##                     Mean   :11.92  
+##                     3rd Qu.:12.56  
+##                     Max.   :13.93
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{anova.temp }\OtherTok{\textless{}{-}} \FunctionTok{aov}\NormalTok{(}\AttributeTok{data=}\NormalTok{NTL.LTR.wrangled, temperature\_C }\SpecialCharTok{\textasciitilde{}}\NormalTok{ lakename)}
+
+\NormalTok{lm.model }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(}\AttributeTok{data=}\NormalTok{NTL.LTR.wrangled, temperature\_C }\SpecialCharTok{\textasciitilde{}}\NormalTok{ lakename)}
+
+\FunctionTok{summary}\NormalTok{(anova.temp)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##              Df Sum Sq Mean Sq F value Pr(>F)
+## lakename      4    228   56.96   1.098  0.357
+## Residuals   389  20176   51.87
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(lm.model)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = temperature_C ~ lakename, data = NTL.LTR.wrangled)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -8.331 -6.756 -2.550  7.338 14.536 
+## 
+## Coefficients:
+##                      Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)           10.5556     1.6975   6.218  1.3e-09 ***
+## lakenamePaul Lake      1.9008     1.7856   1.065    0.288    
+## lakenamePeter Lake     2.0088     1.7904   1.122    0.263    
+## lakenameTuesday Lake  -0.4389     2.4006  -0.183    0.855    
+## lakenameWard Lake      3.3755     2.1610   1.562    0.119    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 7.202 on 389 degrees of freedom
+## Multiple R-squared:  0.01117,    Adjusted R-squared:  0.0009981 
+## F-statistic: 1.098 on 4 and 389 DF,  p-value: 0.3571
+\end{verbatim}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{12}
+\tightlist
+\item
+  Is there a significant difference in mean temperature among the lakes?
+  Report your findings.
+\end{enumerate}
+
+\begin{quote}
+Answer: A low F-value of 1.098 indicates that the difference in mean
+temperature among the lakes varies about as much as the temperature
+within the lakes and the the P value .357 suggests that temperature
+variance between lakes is likely random. The R-squared value indicates
+that the lake name only accounts for about 1\% of temperature reading.
+Ergo, not statiscally significant.
+\end{quote}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{13}
+\tightlist
+\item
+  Create a graph that depicts temperature by depth, with a separate
+  color for each lake. Add a geom\_smooth (method = ``lm'', se = FALSE)
+  for each lake. Make your points 50 \% transparent. Adjust your y axis
+  limits to go from 0 to 35 degrees. Clean up your graph to make it
+  pretty.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#14}
+
+
+\NormalTok{NTL.LTR.faceted }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(NTL.LTR.wrangled, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{depth, }\AttributeTok{y=}\NormalTok{temperature\_C, }\AttributeTok{color=}\NormalTok{lakename))}\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{alpha=}\FloatTok{0.5}\NormalTok{, }\AttributeTok{size=}\DecValTok{1}\NormalTok{)}\SpecialCharTok{+} 
+  \FunctionTok{geom\_smooth}\NormalTok{(}\AttributeTok{method=}\StringTok{"lm"}\NormalTok{, }\AttributeTok{se=}\ConstantTok{FALSE}\NormalTok{)}\SpecialCharTok{+}
+  \FunctionTok{ylim}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{35}\NormalTok{)}\SpecialCharTok{+}
+  \FunctionTok{facet\_wrap}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{lakename)}\SpecialCharTok{+}
+   \FunctionTok{theme}\NormalTok{(}
+    \AttributeTok{panel.background =} \FunctionTok{element\_rect}\NormalTok{(}\AttributeTok{fill =} \StringTok{"\#002020"}\NormalTok{),}
+      \AttributeTok{panel.grid =} \FunctionTok{element\_blank}\NormalTok{()}
+\NormalTok{   )}
+
+\CommentTok{\#still need to remove panel grid here }
+\FunctionTok{print}\NormalTok{(NTL.LTR.faceted) }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `geom_smooth()` using formula = 'y ~ x'
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Removed 13 rows containing missing values or values outside the scale range
+## (`geom_smooth()`).
+\end{verbatim}
+
+\pandocbounded{\includegraphics[keepaspectratio]{LexClayA08_GLMs_files/figure-latex/scatterplot.2-1.pdf}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{14}
+\tightlist
+\item
+  Use the Tukey's HSD test to determine which lakes have different
+  means.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#15}
+
+\FunctionTok{TukeyHSD}\NormalTok{(anova.temp)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   Tukey multiple comparisons of means
+##     95% family-wise confidence level
+## 
+## Fit: aov(formula = temperature_C ~ lakename, data = NTL.LTR.wrangled)
+## 
+## $lakename
+##                                   diff       lwr      upr     p adj
+## Paul Lake-East Long Lake     1.9007758 -2.992848 6.794400 0.8245987
+## Peter Lake-East Long Lake    2.0088194 -2.898035 6.915674 0.7948864
+## Tuesday Lake-East Long Lake -0.4388889 -7.018014 6.140236 0.9997496
+## Ward Lake-East Long Lake     3.3754789 -2.546994 9.297952 0.5227817
+## Peter Lake-Paul Lake         0.1080436 -2.069085 2.285172 0.9999228
+## Tuesday Lake-Paul Lake      -2.3396647 -7.233289 2.553959 0.6849800
+## Ward Lake-Paul Lake          1.4747031 -2.492456 5.441862 0.8466692
+## Tuesday Lake-Peter Lake     -2.4477083 -7.354562 2.459146 0.6491273
+## Ward Lake-Peter Lake         1.3666595 -2.616808 5.350127 0.8810112
+## Ward Lake-Tuesday Lake       3.8143678 -2.108105 9.736840 0.3955788
+\end{verbatim}
+
+16.From the findings above, which lakes have the same mean temperature,
+statistically speaking, as Peter Lake? Does any lake have a mean
+temperature that is statistically distinct from all the other lakes?
+
+\begin{quote}
+Answer: Since all lakes have a P value far above 0.05, none have a
+statistically distinct mean temperature. The lakes are pretty much
+indistinguishable via their temperature data.
+\end{quote}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{16}
+\tightlist
+\item
+  If we were just looking at Peter Lake and Paul Lake. What's another
+  test we might explore to see whether they have distinct mean
+  temperatures?
+\end{enumerate}
+
+\begin{quote}
+Answer: A T-test.
+\end{quote}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{17}
+\tightlist
+\item
+  Wrangle the July data to include only records for Crampton Lake and
+  Ward Lake. Run the two-sample T-test on these data to determine
+  whether their July temperature are same or different. What does the
+  test say? Are the mean temperatures for the lakes equal? Does that
+  match you answer for part 16?
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Crampton does not have any July data which is why it was dropped by na.omit() from the raw dataset. I\textquotesingle{}ve used Tuesday Lake instead. }
+
+\NormalTok{ward.tuesday }\OtherTok{\textless{}{-}}\NormalTok{ NTL.LTR.wrangled }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(lakename }\SpecialCharTok{\%in\%} \FunctionTok{c}\NormalTok{(}\StringTok{"Ward Lake"}\NormalTok{,}\StringTok{"Tuesday Lake"}\NormalTok{))}
+
+\NormalTok{ward.tuesday.test }\OtherTok{\textless{}{-}} \FunctionTok{t.test}\NormalTok{(}\AttributeTok{data=}\NormalTok{ward.tuesday, temperature\_C }\SpecialCharTok{\textasciitilde{}}\NormalTok{lakename)}
+
+\NormalTok{ward.tuesday.test}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Welch Two Sample t-test
+## 
+## data:  temperature_C by lakename
+## t = -1.8432, df = 38.793, p-value = 0.07295
+## alternative hypothesis: true difference in means between group Tuesday Lake and group Ward Lake is not equal to 0
+## 95 percent confidence interval:
+##  -8.0008238  0.3720881
+## sample estimates:
+## mean in group Tuesday Lake    mean in group Ward Lake 
+##                   10.11667                   13.93103
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#mean in group Tuesday Lake    mean in group Ward Lake }
+\CommentTok{\#                 10.11667                   13.93103 }
+
+
+\CommentTok{\# Ward Lake{-}Tuesday Lake       3.8143678 }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{quote}
+Answer: The Tukey test says the diff between Ward Lake-Tuesday Lake is
+3.814, which matches the t.test results to the T. (Sorry, I had to.)
+\end{quote}
+
+\end{document}

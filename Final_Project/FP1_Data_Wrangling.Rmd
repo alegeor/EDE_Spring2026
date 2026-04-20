@@ -1,0 +1,42 @@
+---
+title: "Final Project Part 1: Wrangling"
+author: "Lex Clay"
+date: "2026-04-20"
+output: html_document
+---
+
+```{r setup,echo=FALSE}
+library(readxl)
+library(lubridate)
+library(here)
+library(tidyverse)
+library(janitor)
+```
+
+```{r Importing Nuclear Sites Data}
+
+#I am working with two datasets to get the lat and long of each site. In some instances, like at McGuire, there are multiple units at one site. In this project I will be working with distance from sites, not individual units. 
+
+gen_raw <- read.csv(here("Final_Project/Data/nuclear_units.csv"),skip=1,check.names = FALSE)
+
+gen <- gen_raw %>% clean_names()
+
+#filtering to nuclear units 
+
+nuc_units <- gen %>%  
+  filter(technology=="Nuclear") %>% 
+select(utility_id, utility_name, plant_code, plant_name, state, county, operating_year)
+  
+#aggregating units to sites by utility ID
+
+nuc_sites <- nuc_units %>%  
+  group_by(utility_id) %>% 
+  
+
+```
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

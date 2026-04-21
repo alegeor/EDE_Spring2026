@@ -13,6 +13,8 @@ library(tidyverse)
 library(janitor)
 ```
 
+DATA WRANGLING STEP 1: Joining reactor coordinate and water source data 
+
 ```{r Importing Nuclear Sites Data}
 
 #I am working with two datasets to get the lat and long of each site. In some instances, like at McGuire, there are multiple units at one site. In this project I will be working with distance from sites, not individual units. 
@@ -21,22 +23,48 @@ gen_raw <- read.csv(here("Final_Project/Data/nuclear_units.csv"),skip=1,check.na
 
 gen <- gen_raw %>% clean_names()
 
+gen$nameplate_capacity_mw <- as.numeric(gsub(",", "", gen$nameplate_capacity_mw))
+
 #filtering to nuclear units 
 
 nuc_units <- gen %>%  
   filter(technology=="Nuclear") %>% 
-select(utility_id, utility_name, plant_code, plant_name, state, county, operating_year)
+select(utility_id, utility_name, plant_code, plant_name, state, county, nameplate_capacity_mw, operating_year)
   
-#aggregating units to sites by utility ID
+#aggregating units to sites by plant codes. 
 
 nuc_sites <- nuc_units %>%  
-  group_by(utility_id) %>% 
+  group_by(plant_code) %>% 
+  summarise(
+    n_units = n(), 
+    total_nameplate_mw = sum(nameplate_capacity_mw, na.rm = TRUE),
+    first_online_year = min(operating_year, na.rm = TRUE),
+    last_online_year =max(operating_year, na.rm = TRUE),
+    .groups = "drop"
+    )
   
+```
+
+```{r Import Plant and Water Source Data }
+
+plant.raw <- read.csv(here("Final_Project/Data/plant_watersource.csv"), skip = 1, check.names = FALSE)
+
+plant <- plant.raw %>% clean_names()
+```
+
+
+```{r Join Data Sets}
+
+nuclear_join <- plant %>%  
+  inner_join(nuc_sites, by="plant_code") %>%  
+  select(plant_code, plant_name, utility_name, state, county,
+         latitude, longitude, water_source = name_of_water_source,
+         n_units, total_nameplate_mw,
+         first_online_year, last_online_year)
 
 ```
 
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
+DATA WRANGLING STEP 2: Pulling Household Income with Tidycensus 
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+

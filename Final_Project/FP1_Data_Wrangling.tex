@@ -1,0 +1,617 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+]{article}
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{float}
+\usepackage{tabularray}
+\usepackage[normalem]{ulem}
+\usepackage{graphicx}
+\usepackage{rotating}
+\UseTblrLibrary{siunitx}
+\NewTableCommand{\tinytableDefineColor}[3]{\definecolor{#1}{#2}{#3}}
+\newcommand{\tinytableTabularrayUnderline}[1]{\underline{#1}}
+\newcommand{\tinytableTabularrayStrikeout}[1]{\sout{#1}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Proximity to Nuclear Reactors and Household Income in U.S. Census Tracts},
+  pdfauthor={Lex Clay},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Proximity to Nuclear Reactors and Household Income in U.S. Census
+Tracts}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\subtitle{A Spatial Analysis of over 80,000 Tracts}
+\author{Lex Clay}
+\date{2026-04-24}
+
+\begin{document}
+\maketitle
+
+\begin{verbatim}
+## 
+## Attaching package: 'lubridate'
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:base':
+## 
+##     date, intersect, setdiff, union
+\end{verbatim}
+
+\begin{verbatim}
+## here() starts at C:/Users/lexcl/OneDrive/Documents/EDE/EDE_Spring2026
+\end{verbatim}
+
+\begin{verbatim}
+## -- Attaching core tidyverse packages ------------------------ tidyverse 2.0.0 --
+## v dplyr   1.2.0     v readr   2.1.5
+## v forcats 1.0.0     v stringr 1.6.0
+## v ggplot2 4.0.0     v tibble  3.3.1
+## v purrr   1.1.0     v tidyr   1.3.2
+## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()
+## i Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
+## 
+## Attaching package: 'janitor'
+## 
+## 
+## The following objects are masked from 'package:stats':
+## 
+##     chisq.test, fisher.test
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'tidycensus' was built under R version 4.5.3
+\end{verbatim}
+
+\begin{verbatim}
+## Linking to GEOS 3.13.1, GDAL 3.11.4, PROJ 9.7.0; sf_use_s2() is TRUE
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'modelsummary' was built under R version 4.5.3
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Attaching package: 'modelsummary'
+## 
+## The following object is masked from 'package:tidycensus':
+## 
+##     get_estimates
+\end{verbatim}
+
+DATA WRANGLING STEP 1: Joining reactor coordinate and water source data
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#I am working with two datasets to get the lat and long of each site. In some instances, like at McGuire, there are multiple units at one site. In this project I will be working with distance from sites, not individual units. }
+
+\NormalTok{gen\_raw }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\FunctionTok{here}\NormalTok{(}\StringTok{"Final\_Project/Data/nuclear\_units.csv"}\NormalTok{),}\AttributeTok{skip=}\DecValTok{1}\NormalTok{,}\AttributeTok{check.names =} \ConstantTok{FALSE}\NormalTok{)}
+
+\NormalTok{gen }\OtherTok{\textless{}{-}}\NormalTok{ gen\_raw }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{clean\_names}\NormalTok{()}
+
+\NormalTok{gen}\SpecialCharTok{$}\NormalTok{nameplate\_capacity\_mw }\OtherTok{\textless{}{-}} \FunctionTok{as.numeric}\NormalTok{(}\FunctionTok{gsub}\NormalTok{(}\StringTok{","}\NormalTok{, }\StringTok{""}\NormalTok{, gen}\SpecialCharTok{$}\NormalTok{nameplate\_capacity\_mw))}
+
+\CommentTok{\#filtering to nuclear units }
+
+\NormalTok{nuc\_units }\OtherTok{\textless{}{-}}\NormalTok{ gen }\SpecialCharTok{\%\textgreater{}\%}  
+  \FunctionTok{filter}\NormalTok{(technology}\SpecialCharTok{==}\StringTok{"Nuclear"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+\FunctionTok{select}\NormalTok{(utility\_id, utility\_name, plant\_code, plant\_name, state, county, nameplate\_capacity\_mw, operating\_year)}
+  
+\CommentTok{\#aggregating units to sites by plant codes. }
+
+\NormalTok{nuc\_sites }\OtherTok{\textless{}{-}}\NormalTok{ nuc\_units }\SpecialCharTok{\%\textgreater{}\%}  
+  \FunctionTok{group\_by}\NormalTok{(plant\_code) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{summarise}\NormalTok{(}
+    \AttributeTok{n\_units =} \FunctionTok{n}\NormalTok{(), }
+    \AttributeTok{total\_nameplate\_mw =} \FunctionTok{sum}\NormalTok{(nameplate\_capacity\_mw, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{),}
+    \AttributeTok{first\_online\_year =} \FunctionTok{min}\NormalTok{(operating\_year, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{),}
+    \AttributeTok{last\_online\_year =}\FunctionTok{max}\NormalTok{(operating\_year, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{),}
+    \AttributeTok{.groups =} \StringTok{"drop"}
+\NormalTok{    )}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{plant.raw }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\FunctionTok{here}\NormalTok{(}\StringTok{"Final\_Project/Data/plant\_watersource.csv"}\NormalTok{), }\AttributeTok{skip =} \DecValTok{1}\NormalTok{, }\AttributeTok{check.names =} \ConstantTok{FALSE}\NormalTok{)}
+
+\NormalTok{plant }\OtherTok{\textless{}{-}}\NormalTok{ plant.raw }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{clean\_names}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{nuclear\_join }\OtherTok{\textless{}{-}}\NormalTok{ plant }\SpecialCharTok{\%\textgreater{}\%}  
+  \FunctionTok{inner\_join}\NormalTok{(nuc\_sites, }\AttributeTok{by=}\StringTok{"plant\_code"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}  
+  \FunctionTok{select}\NormalTok{(plant\_code, plant\_name, utility\_name, state, county,}
+\NormalTok{         latitude, longitude, }\AttributeTok{water\_source =}\NormalTok{ name\_of\_water\_source,}
+\NormalTok{         n\_units, total\_nameplate\_mw,}
+\NormalTok{         first\_online\_year, last\_online\_year)}
+
+\FunctionTok{write.csv}\NormalTok{(nuclear\_join, }
+          \FunctionTok{here}\NormalTok{(}\StringTok{"Final\_Project/Data/Processed/nuclear\_join.csv"}\NormalTok{), }
+          \AttributeTok{row.names =} \ConstantTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+DATA WRANGLING STEP 2: Pulling Household Income with Tidycensus
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{conus\_states }\OtherTok{\textless{}{-}}\NormalTok{ state.abb[}\SpecialCharTok{!}\NormalTok{state.abb }\SpecialCharTok{\%in\%} \FunctionTok{c}\NormalTok{(}\StringTok{"AK"}\NormalTok{,}\StringTok{"HI"}\NormalTok{)]}
+
+\NormalTok{acs\_tracts }\OtherTok{\textless{}{-}} \FunctionTok{get\_acs}\NormalTok{(}
+  \AttributeTok{geography =} \StringTok{"tract"}\NormalTok{, }
+  \AttributeTok{variables =} \StringTok{"B19013\_001"}\NormalTok{, }
+  \AttributeTok{year =}\DecValTok{2024}\NormalTok{, }
+  \AttributeTok{survey =} \StringTok{"acs5"}\NormalTok{, }
+  \AttributeTok{state =}\NormalTok{ conus\_states,}
+  \AttributeTok{geometry =} \ConstantTok{TRUE}\NormalTok{,            }
+  \AttributeTok{output =} \StringTok{"wide"}
+\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{rename}\NormalTok{(}\AttributeTok{median\_hh\_income =}\NormalTok{ B19013\_001E,}
+         \AttributeTok{median\_hh\_income\_moe =}\NormalTok{ B19013\_001M) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{st\_transform}\NormalTok{(}\DecValTok{5070}\NormalTok{)  }
+
+\FunctionTok{saveRDS}\NormalTok{(acs\_tracts, }\FunctionTok{here}\NormalTok{(}\StringTok{"Final\_Project/Data/Processed/acs\_tracts.rds"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{acs\_tracts }\OtherTok{\textless{}{-}} \FunctionTok{read\_rds}\NormalTok{(}\FunctionTok{here}\NormalTok{(}\StringTok{"Final\_Project/Data/Processed/acs\_tracts.rds"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{nuclear\_sf }\OtherTok{\textless{}{-}}\NormalTok{ nuclear\_join }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{st\_as\_sf}\NormalTok{(}\AttributeTok{coords =} \FunctionTok{c}\NormalTok{(}\StringTok{"longitude"}\NormalTok{, }\StringTok{"latitude"}\NormalTok{), }\AttributeTok{crs=}\DecValTok{4326}\NormalTok{, }\AttributeTok{remove =} \ConstantTok{FALSE}\NormalTok{)}
+
+\NormalTok{nuclear\_albers }\OtherTok{\textless{}{-}}\NormalTok{ nuclear\_sf }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{st\_transform}\NormalTok{(}\DecValTok{5070}\NormalTok{)}
+
+\FunctionTok{saveRDS}\NormalTok{(nuclear\_sf, }
+        \FunctionTok{here}\NormalTok{(}\StringTok{"Final\_Project/Data/Processed/nuclear\_sf.rds"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{tract\_centroids }\OtherTok{\textless{}{-}} \FunctionTok{st\_centroid}\NormalTok{(acs\_tracts)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: st_centroid assumes attributes are constant over geometries
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{nearest\_idx }\OtherTok{\textless{}{-}} \FunctionTok{st\_nearest\_feature}\NormalTok{(tract\_centroids, nuclear\_albers)}
+
+\NormalTok{tracts\_with\_dist }\OtherTok{\textless{}{-}}\NormalTok{ acs\_tracts }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{nearest\_plant\_code =}\NormalTok{ nuclear\_albers}\SpecialCharTok{$}\NormalTok{plant\_code[nearest\_idx],}
+    \AttributeTok{nearest\_plant\_name =}\NormalTok{ nuclear\_albers}\SpecialCharTok{$}\NormalTok{plant\_name[nearest\_idx],}
+    \AttributeTok{dist\_to\_reactor\_m =} \FunctionTok{as.numeric}\NormalTok{(}
+      \FunctionTok{st\_distance}\NormalTok{(tract\_centroids, nuclear\_albers[nearest\_idx, ], }\AttributeTok{by\_element =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{    ),}
+    \AttributeTok{dist\_to\_reactor\_mi =}\NormalTok{ dist\_to\_reactor\_m }\SpecialCharTok{/} \FloatTok{1609.34}
+\NormalTok{  )}
+
+\CommentTok{\#count NA}
+
+\NormalTok{count\_na }\OtherTok{\textless{}{-}}\NormalTok{ tracts\_with\_dist }\SpecialCharTok{\%\textgreater{}\%}
+\FunctionTok{filter}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(dist\_to\_reactor\_m) }\SpecialCharTok{|} \FunctionTok{is.na}\NormalTok{(median\_hh\_income)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{nrow}\NormalTok{()}
+
+\NormalTok{count\_na}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1435
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#dropping NA for track distance and mm hh income }
+
+\NormalTok{tracts\_clean }\OtherTok{\textless{}{-}}\NormalTok{ tracts\_with\_dist }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(dist\_to\_reactor\_m),}
+         \SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(median\_hh\_income))}
+
+\FunctionTok{saveRDS}\NormalTok{(tracts\_clean, }\FunctionTok{here}\NormalTok{(}\StringTok{"Final\_Project/Data/Processed/tracts\_clean.rds"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#For this analysis part, I decided to create bins based off of established NRC planning zones.The NRC defines the first EPZ as the plume exposure pathway extending about 10 miles in radius around the reactor site. The plume exposure pathway extends about 50 miles in radius. Since these are rather large radii, I created subgroups and then bins from each subgroup. For each subgroup, n \textgreater{}= 30. }
+
+\CommentTok{\#Since only 3 census tracts fell within 1 mi of a nuclear site, I used 0{-}5 miles as the first bin, where n = 193, to have a large enough sample size of tracts. }
+
+\NormalTok{bin\_samplesize\_check }\OtherTok{\textless{}{-}}\NormalTok{ tracts\_clean }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{st\_drop\_geometry}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{summarise}\NormalTok{(}
+    \AttributeTok{under\_1 =}\FunctionTok{sum}\NormalTok{(dist\_to\_reactor\_mi}\SpecialCharTok{\textless{}}\DecValTok{1}\NormalTok{), }
+    \AttributeTok{under\_5 =}\FunctionTok{sum}\NormalTok{(dist\_to\_reactor\_mi}\SpecialCharTok{\textless{}}\DecValTok{5}\NormalTok{), }
+    \AttributeTok{under\_10=}\FunctionTok{sum}\NormalTok{(dist\_to\_reactor\_mi}\SpecialCharTok{\textless{}}\DecValTok{10}\NormalTok{)}
+\NormalTok{  )}
+
+\CommentTok{\#I then used the cut() function to create a new column called dist\_bin that cuts the dist\_to\_reactor\_mi column based on a vector of specific distance ranges. https://www.statology.org/cut{-}function{-}in{-}r/}
+
+\NormalTok{tracts\_clean\_binned }\OtherTok{\textless{}{-}}\NormalTok{ tracts\_clean }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{dist\_bin =} \FunctionTok{cut}\NormalTok{(dist\_to\_reactor\_mi,}
+                   \AttributeTok{breaks =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{5}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{50}\NormalTok{, }\ConstantTok{Inf}\NormalTok{),}
+                   \AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"0{-}5 mi (inner Plume EPZ)"}\NormalTok{,}
+                              \StringTok{"5{-}10 mi (outer Plume EPZ)"}\NormalTok{,}
+                              \StringTok{"10{-}50 mi (Ingestion EPZ)"}\NormalTok{,}
+                              \StringTok{"50+ mi (outside EPZs)"}\NormalTok{),}
+                   \AttributeTok{include.lowest =} \ConstantTok{TRUE}\NormalTok{),}
+    \AttributeTok{state\_fips =} \FunctionTok{substr}\NormalTok{(GEOID, }\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{),}
+    \AttributeTok{log\_income =} \FunctionTok{log}\NormalTok{(median\_hh\_income)}
+\NormalTok{  )}
+
+\NormalTok{tracts\_clean\_binned}\SpecialCharTok{$}\NormalTok{dist\_bin }\OtherTok{\textless{}{-}} \FunctionTok{relevel}\NormalTok{(}\FunctionTok{factor}\NormalTok{(tracts\_clean\_binned}\SpecialCharTok{$}\NormalTok{dist\_bin),}
+                                         \AttributeTok{ref =} \StringTok{"50+ mi (outside EPZs)"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{tract\_lm }\OtherTok{\textless{}{-}} \FunctionTok{st\_drop\_geometry}\NormalTok{(tracts\_clean\_binned)}
+
+\NormalTok{lm.model.one }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(log\_income}\SpecialCharTok{\textasciitilde{}}\NormalTok{dist\_bin }\SpecialCharTok{+} \FunctionTok{factor}\NormalTok{(state\_fips), }\AttributeTok{data =}\NormalTok{ tract\_lm)}
+
+\NormalTok{model\_one\_summary }\OtherTok{\textless{}{-}} \FunctionTok{summary}\NormalTok{(lm.model.one)}
+
+\NormalTok{model\_one\_summary}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = log_income ~ dist_bin + factor(state_fips), data = tract_lm)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -3.6908 -0.2636  0.0047  0.2782  1.4286 
+## 
+## Coefficients:
+##                                    Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)                       10.974862   0.011558 949.576  < 2e-16 ***
+## dist_bin0-5 mi (inner Plume EPZ)   0.185685   0.031486   5.897 3.71e-09 ***
+## dist_bin5-10 mi (outer Plume EPZ)  0.110596   0.016674   6.633 3.31e-11 ***
+## dist_bin10-50 mi (Ingestion EPZ)   0.023568   0.004246   5.551 2.85e-08 ***
+## factor(state_fips)04               0.273253   0.015560  17.562  < 2e-16 ***
+## factor(state_fips)05              -0.027617   0.019059  -1.449   0.1473    
+## factor(state_fips)06               0.505870   0.012427  40.709  < 2e-16 ***
+## factor(state_fips)08               0.469700   0.016307  28.804  < 2e-16 ***
+## factor(state_fips)09               0.466702   0.018780  24.851  < 2e-16 ***
+## factor(state_fips)10               0.337699   0.029578  11.417  < 2e-16 ***
+## factor(state_fips)12               0.218105   0.013042  16.724  < 2e-16 ***
+## factor(state_fips)13               0.235201   0.014178  16.589  < 2e-16 ***
+## factor(state_fips)16               0.285674   0.023429  12.193  < 2e-16 ***
+## factor(state_fips)17               0.283239   0.013959  20.291  < 2e-16 ***
+## factor(state_fips)18               0.143950   0.015660   9.192  < 2e-16 ***
+## factor(state_fips)19               0.220008   0.018557  11.856  < 2e-16 ***
+## factor(state_fips)20               0.200377   0.019099  10.492  < 2e-16 ***
+## factor(state_fips)21               0.020018   0.016723   1.197   0.2313    
+## factor(state_fips)22              -0.042372   0.016589  -2.554   0.0106 *  
+## factor(state_fips)23               0.215681   0.024606   8.765  < 2e-16 ***
+## factor(state_fips)24               0.515968   0.016343  31.571  < 2e-16 ***
+## factor(state_fips)25               0.540361   0.015910  33.963  < 2e-16 ***
+## factor(state_fips)26               0.155099   0.014139  10.970  < 2e-16 ***
+## factor(state_fips)27               0.383154   0.016196  23.657  < 2e-16 ***
+## factor(state_fips)28              -0.098341   0.018742  -5.247 1.55e-07 ***
+## factor(state_fips)29               0.135805   0.015743   8.626  < 2e-16 ***
+## factor(state_fips)30               0.168783   0.027060   6.237 4.47e-10 ***
+## factor(state_fips)31               0.251111   0.021822  11.507  < 2e-16 ***
+## factor(state_fips)32               0.268337   0.019463  13.787  < 2e-16 ***
+## factor(state_fips)33               0.480724   0.026076  18.436  < 2e-16 ***
+## factor(state_fips)34               0.543341   0.014847  36.596  < 2e-16 ***
+## factor(state_fips)35               0.043374   0.021276   2.039   0.0415 *  
+## factor(state_fips)36               0.362008   0.013008  27.830  < 2e-16 ***
+## factor(state_fips)37               0.159807   0.014395  11.102  < 2e-16 ***
+## factor(state_fips)38               0.245638   0.030994   7.925 2.31e-15 ***
+## factor(state_fips)39               0.128827   0.013903   9.266  < 2e-16 ***
+## factor(state_fips)40               0.082041   0.017097   4.799 1.60e-06 ***
+## factor(state_fips)41               0.336433   0.017994  18.697  < 2e-16 ***
+## factor(state_fips)42               0.232924   0.013960  16.685  < 2e-16 ***
+## factor(state_fips)44               0.371928   0.030000  12.398  < 2e-16 ***
+## factor(state_fips)45               0.073659   0.016791   4.387 1.15e-05 ***
+## factor(state_fips)46               0.206226   0.030213   6.826 8.80e-12 ***
+## factor(state_fips)47               0.116200   0.015664   7.418 1.20e-13 ***
+## factor(state_fips)48               0.232188   0.012680  18.311  < 2e-16 ***
+## factor(state_fips)49               0.477613   0.019998  23.883  < 2e-16 ***
+## factor(state_fips)50               0.318512   0.033402   9.536  < 2e-16 ***
+## factor(state_fips)51               0.415125   0.014922  27.819  < 2e-16 ***
+## factor(state_fips)53               0.502261   0.015491  32.423  < 2e-16 ***
+## factor(state_fips)54              -0.036821   0.021918  -1.680   0.0930 .  
+## factor(state_fips)55               0.231735   0.016020  14.466  < 2e-16 ***
+## factor(state_fips)56               0.249137   0.036326   6.858 7.01e-12 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.4342 on 82071 degrees of freedom
+## Multiple R-squared:  0.1226, Adjusted R-squared:  0.122 
+## F-statistic: 229.3 on 50 and 82071 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{modelsum }\OtherTok{\textless{}{-}} \FunctionTok{modelsummary}\NormalTok{(lm.model.one, }
+             \AttributeTok{coef\_omit =} \StringTok{"state\_fips|Intercept"}\NormalTok{,}
+             \AttributeTok{stars =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{modelsum}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+\centering
+\begin{talltblr}[         %% tabularray outer open
+entry=none,label=none,
+note{}={+ p \num{< 0.1}, * p \num{< 0.05}, ** p \num{< 0.01}, *** p \num{< 0.001}},
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+colspec={Q[]Q[]},
+hline{2}={1-2}{solid, black, 0.05em},
+hline{8}={1-2}{solid, black, 0.05em},
+hline{1}={1-2}{solid, black, 0.08em},
+hline{16}={1-2}{solid, black, 0.08em},
+column{2}={}{halign=c},
+column{1}={}{halign=l},
+}                     %% tabularray inner close
+& (1) \\
+dist\_bin0-5 mi (inner Plume EPZ) & \num{0.186}*** \\
+& (\num{0.031}) \\
+dist\_bin5-10 mi (outer Plume EPZ) & \num{0.111}*** \\
+& (\num{0.017}) \\
+dist\_bin10-50 mi (Ingestion EPZ) & \num{0.024}*** \\
+& (\num{0.004}) \\
+Num.Obs. & \num{82122} \\
+R2 & \num{0.123} \\
+R2 Adj. & \num{0.122} \\
+AIC & \num{96103.1} \\
+BIC & \num{96587.6} \\
+Log.Lik. & \num{-47999.571} \\
+F & \num{229.270} \\
+RMSE & \num{0.43} \\
+\end{talltblr}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Now I will do a Tukey{-}HSD test. Since it allows for "all possible pairwise comparisons" which will allow me to do a bin{-}to{-}bin comparison of household income as a function of reactor proximity. https://www.r{-}bloggers.com/2021/08/how{-}to{-}perform{-}tukey{-}hsd{-}test{-}in{-}r/}
+
+\NormalTok{anova.model }\OtherTok{\textless{}{-}} \FunctionTok{aov}\NormalTok{(log\_income}\SpecialCharTok{\textasciitilde{}}\NormalTok{dist\_bin, }\AttributeTok{data =}\NormalTok{ tract\_lm)}
+
+\NormalTok{bin\_comparison }\OtherTok{\textless{}{-}} \FunctionTok{TukeyHSD}\NormalTok{(anova.model)}
+\NormalTok{bin\_comparison}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   Tukey multiple comparisons of means
+##     95% family-wise confidence level
+## 
+## Fit: aov(formula = log_income ~ dist_bin, data = tract_lm)
+## 
+## $dist_bin
+##                                                            diff          lwr
+## 0-5 mi (inner Plume EPZ)-50+ mi (outside EPZs)      0.140162599  0.054335663
+## 5-10 mi (outer Plume EPZ)-50+ mi (outside EPZs)     0.047531157  0.002466009
+## 10-50 mi (Ingestion EPZ)-50+ mi (outside EPZs)      0.005498799 -0.004017845
+## 5-10 mi (outer Plume EPZ)-0-5 mi (inner Plume EPZ) -0.092631442 -0.189326541
+## 10-50 mi (Ingestion EPZ)-0-5 mi (inner Plume EPZ)  -0.134663800 -0.220743072
+## 10-50 mi (Ingestion EPZ)-5-10 mi (outer Plume EPZ) -0.042032358 -0.087576247
+##                                                             upr     p adj
+## 0-5 mi (inner Plume EPZ)-50+ mi (outside EPZs)      0.225989535 0.0001598
+## 5-10 mi (outer Plume EPZ)-50+ mi (outside EPZs)     0.092596306 0.0340456
+## 10-50 mi (Ingestion EPZ)-50+ mi (outside EPZs)      0.015015442 0.4469272
+## 5-10 mi (outer Plume EPZ)-0-5 mi (inner Plume EPZ)  0.004063657 0.0661559
+## 10-50 mi (Ingestion EPZ)-0-5 mi (inner Plume EPZ)  -0.048584528 0.0003404
+## 10-50 mi (Ingestion EPZ)-5-10 mi (outer Plume EPZ)  0.003511530 0.0827240
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#In the future, I would like to do a Dunnett comparison so I can control for variation between states, but that is beyond the scope of my current knowledge and time for this project. }
+\end{Highlighting}
+\end{Shaded}
+
+\section{Methods}\label{methods}
+
+I examined the correlation between proximity to nuclear reactors and
+tract-level median household income, which I log-transformed to minimize
+the impacts of right-skewed income data. Using 2020-2024 ACS 5-year
+estimates for 82,122 CONUS census tracts and plant coordinates from the
+EIA form 860 (2024), I estimated the distance from each tract centroid
+to its nearest operating nuclear reactor site, and then classified
+tracts into bins aligned with the Nuclear Regulatory Commission's
+Emergency Planning Zones.
+
+Because several reactor sites host multiple generating units (for
+example, McGuire has two units, Vogtle has four), I aggregated reactor
+units to the site level using the plant code on the Form EIA-860. This
+produced 56 unique reactor sites from 96 individual generator units.
+
+Because this analysis focuses on the income levels of those who live in
+immediate proximity to nuclear reactors, I subdivided the 10-mile Plume
+Exposure Pathway into two bins. Since only 3 census tracts fell within 1
+mi of a nuclear site, I used 0-5 miles as the first bin, where n = 193,
+to have a large enough sample size of tracts.
+
+\section{Results}\label{results}
+
+A log-linear regression of median household income on tracts in the
+following defined bins:``0-5 mi (inner plume EPZ)'', ``5-10 mi (outer
+plume EPZ)'', ``10-50 mi (Ingestion EPZ)'',``50+ mi (outside EPZs)''),
+shows that tracts within the 10-mile plume exposure pathway had
+statistically significant higher household incomes than the reference
+group -tracts beyond 50 miles from any reactor. The effect is strongest
+in the innermost 0-5 mile ring, where tracts exhibit median incomes
+20.4\% higher than the reference (p \textless.001 or p = 3.71e-09) and
+attenuates to 11.7\% in the 5-10 mile ring (p \textless.001 or p =
+3.31e-11). Beyond the plume EPZ, the effect dampens sharply. Tracts in
+the 10-50 mile ingestion pathway EPZ have incomes only 2.4\% higher than
+the reference (p \textless{} .001 or p = 2.85e-08).
+
+To test whether this attenuation is a substantive threshold, I used a
+Tukey HSD for a bin-to-bin comparison of household income as a function
+of proximity to nuclear reactors. The analysis confirms that the
+reactor-proximity effects in tracts in the Ingestion Pathway EPZ are
+statistically indistinguishable from tracts beyond the 50-mile ring (p =
+.45). While the primary regression detects a 2.4\% household income
+premium in the Ingestion EPZ, the effect does not survive a more
+conservative pairwise comparison, suggesting that notable
+income-proximity effects are confined within the 10-mile plume exposure
+pathway.
+
+The Tukey test also shows that the income-proximity effect between the
+inner plume and outer plume is marginal (p = .07), suggesting that the
+two bins in the 10-mile plume generally behave as one wealthier area in
+comparison to farther away bins. Therefore, reactor-proximity effects on
+wealth appear to be spatially correlated and concentrated to the 10-mile
+zone, dampening beyond that radius.
+
+\section{Limitations}\label{limitations}
+
+In the future, I would like to do a Dunnett comparison across bins so I
+can control for variation between states, but that is beyond the scope
+of my current knowledge and time for this project. Given that reactors
+are distributed fairly evenly across 28 states, state-level reactor
+imbalance is unlikely to throw off the Tukey Test.
+
+The R-squared value indicates that about 12\% of variance in tract-log
+income can be explained by the bins or controlling for state. However,
+other factors that might influence tract-log income, like proximity to
+urban areas, are unaccounted for in this analysis.
+
+1,435 census tracts were omitted from the analysis because they were
+missing either median household income or distance to reactor data, 271
+due to invalid geometries that precluded distance calculation, and 1,164
+due to suppressed ACS median household income estimates.
+
+\section{Conclusion}\label{conclusion}
+
+This pattern is inconsistent with the environmental-justice narrative
+observed with other kinds of energy-infrastructure (coal plants, oil
+refineries), and consistent with the hypothesis that nuclear reactor
+site selection near bodies of water, coincides with lakeside real estate
+premiums. This is a correlation not causation. Nuclear reactors do not
+attract affluent residents, rather bodies of water attract both nuclear
+reactors and affluent residents. Reactor cooling requirements drive
+reactor siting near reservoirs and lakes, which independently command
+real-estate premiums. Civilizations have clustered along the Tigris, the
+Euphrates, the Nile, and the Mississippi for reasons that have nothing
+to do with fission. Reactors and millionaires merely came online.
+
+\end{document}

@@ -11,6 +11,13 @@ library(lubridate)
 library(here)
 library(tidyverse)
 library(janitor)
+library(mapview)
+library(tidycensus)
+library(sf)
+library(readr)
+
+#census_api_key("API WAS HERE", install = TRUE)
+
 ```
 
 DATA WRANGLING STEP 1: Joining reactor coordinate and water source data 
@@ -42,7 +49,7 @@ nuc_sites <- nuc_units %>%
     last_online_year =max(operating_year, na.rm = TRUE),
     .groups = "drop"
     )
-  
+
 ```
 
 ```{r Import Plant and Water Source Data }
@@ -62,9 +69,75 @@ nuclear_join <- plant %>%
          n_units, total_nameplate_mw,
          first_online_year, last_online_year)
 
+write.csv(nuclear_join, 
+          here("Final_Project/Data/Processed/nuclear_join.csv"), 
+          row.names = FALSE)
 ```
 
 DATA WRANGLING STEP 2: Pulling Household Income with Tidycensus 
 
+```{r}
+conus_states <- state.abb[!state.abb %in% c("AK","HI")]
 
+acs_tracts <- get_acs(
+  geography = "tract", 
+  variables = "B19013_001", 
+  year =2024, 
+  survey = "acs5", 
+  state = conus_states,
+  geometry = TRUE,            # returns sf object with tract polygons
+  output = "wide"
+) %>%
+  rename(median_hh_income = B19013_001E,
+         median_hh_income_moe = B19013_001M) %>%
+  st_transform(5070)  
+
+saveRDS(acs_tracts, here("Final_Project/Data/Processed/acs_tracts.rds"))
+
+```
+
+```{r}
+
+acs_tracts <- read_rds(here("Final_Project/Data/Processed/acs_tracts.rds"))
+  
+```
+
+
+```{r}
+
+nuclear_sf <- nuclear_join %>%
+  st_as_sf(coords = c("longitude", "latitude"), crs=4326, remove = FALSE)
+
+nuclear_albers <- nuclear_sf %>% st_transform(5070)
+
+saveRDS(nuclear_sf, 
+        here("Final_Project/Data/Processed/nuclear_sf.rds"))
+
+mapview(nuclear_sf)
+```
+
+```{r Calculate Distance from Tract to Plant}
+
+tract_centroids <- st_centroid(acs_tracts)
+
+nearest_idx <- st_nearest_feature(tract_centroids, nuclear_albers)
+
+tracts_with_dist <- acs_tracts %>%
+  mutate(
+    nearest_plant_code = nuclear_albers$plant_code[nearest_idx],
+    nearest_plant_name = nuclear_albers$plant_name[nearest_idx],
+    dist_to_reactor_m = as.numeric(
+      st_distance(tract_centroids, nuclear_albers[nearest_idx, ], by_element = TRUE)
+    ),
+    dist_to_reactor_mi = dist_to_reactor_m / 1609.34
+  )
+
+#dropping NA for track distance and mm hh income 
+
+tracts_clean <- tracts_with_dist %>%
+  filter(!is.na(dist_to_reactor_m),
+         !is.na(median_hh_income))
+
+saveRDS(tracts_clean, here("Final_Project/Data/Processed/tracts_clean.rds"))
+```
 
